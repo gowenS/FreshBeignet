@@ -4,19 +4,17 @@
 <html>
 	<head>
 		<meta charset="ISO-8859-1">
-		<title>Welcome to Descriptionary | FreshBeignet.</title>
+		<title>Welcome, enjoy the freshest of all the beignets here.</title>
 		<link rel="stylesheet" href="css/style.css">
   		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	</head>
 	<body>
+		<h2>Welcome to Fresh Beignet!</h2>
 		<img src="images/fblogo.png" alt="Freshest Beignet" class=center >
-		<h2>Welcome to Descriptionary</h2>
-		<form action="join" method="get">
-			<button class=button1>Join a Game</button>
+		<form action="Descriptionary" method="get">
+			<button class=button1>Play Descriptionary</button>
 		</form> 			
 		<div class=center></div>
-		<form action="host" method="get">
-			<button class=button1>Host a Game</button>
-		</form>			
+		<h6>More game options coming soon!</h6>		
 	</body>
 </html>

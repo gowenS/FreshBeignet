@@ -1,4 +1,4 @@
-package net.freshbeig.servlets;
+package servlets;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import net.freshbeig.dao.DBconnection;
+import dao.DBconnection;
 
 //Yes this is exactly as lazy as it looks.
 @WebServlet("/performcleanup")
