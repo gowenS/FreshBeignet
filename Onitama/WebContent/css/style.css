@@ -1,0 +1,273 @@
+@import url(https://fonts.googleapis.com/css?family=Amatic+SC);
+@import url('https://fonts.googleapis.com/css?family=Old+Standard+TT');
+	
+
+
+body{
+
+	margin: 0 auto 0 auto;
+	text-align: center;
+	background-color: #F1F2EE;
+	overscroll-behavior: none;
+	
+}
+
+
+h3{
+	font-family: 'Amatic SC', cursive;
+	color: #435058;
+	text-align: center;
+	font-size: 32px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+h2{
+	font-family: 'Amatic SC', cursive;
+	color: #435058;
+	text-align: center;
+	font-size: 50px;
+}
+
+
+h5{
+	font-family: 'Old Standard TT', serif;
+	color: #848C8E;
+	text-align: center;
+	font-size: 18px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+h6{
+	font-family: 'Old Standard TT', serif;
+	color: 'black';
+	text-align: center;
+	font-size: 12px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.table{
+	display: block;
+	text-align: center;
+}
+
+table{
+	margin: 0 auto 0 auto;
+}
+tr{
+	text-align: center;
+	font-size: 30px;
+	font-family: 'Amatic SC', cursive;
+	margin: 0 auto 0 auto;
+}
+td{
+	text-align: center;
+	font-size: 30px;
+	font-family: 'Amatic SC', cursive;
+	margin: 0 auto 0 auto;
+}
+
+
+mark{
+	background-color: #DCF763;
+	
+}
+
+.joinTextField{
+	background-color: #435058;
+	font-size: 30px;
+	color: #DCF763;
+	text-align: center;
+	display: block;
+	width: 165px;
+	font-family: 'Old Standard TT', serif;
+	margin-top: 10px;
+	margin-bottom: 45px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+textarea{
+	background-color: #435058;
+	color: #DCF763;
+	text-align: center;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 40%;
+	height: 85px;
+}
+
+.center{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 200px;
+	
+}
+
+.dropdown{	
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 45px;
+}
+
+.submittedbox{
+	width: 30px;
+	height: 30px;
+	margin-left: auto;
+	margin-right: auto;
+	
+}
+.centerpic{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	height: 440px;
+	width: 355px;
+	border: 1px solid black;
+}
+
+.button1{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #435058; 
+	color: #DCF763;
+	border: none;
+	text-align: center;
+	font-size: 30px;
+	font-family: 'Amatic SC', cursive;
+	margin-top: 1em;
+	padding-left: 30px;
+	padding-right: 30px;
+}
+.button2{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #435058; 
+	color: #DCF763;
+	border: none;
+	text-align: center;
+	font-size: 20px;
+	font-family: 'Amatic SC', cursive;
+	margin-top: 5px;
+	padding-left: 30px;
+	padding-right: 30px;
+}
+
+.button3{
+	
+	background-color: #435058; 
+	color: #DCF763;
+	border: none;
+	text-align: center;
+	font-size: 20px;
+	font-family: 'Amatic SC', cursive;
+	margin-top: 5px;
+	flex: 2;
+	margin-left: 5px;
+}
+
+.button4{
+	
+	background-color: #bfb7b6; 
+	color: #435058;
+	border: none;
+	text-align: center;
+	font-size: 20px;
+	font-family: 'Amatic SC', cursive;
+	margin-top: 5px;
+	flex: 1;
+	margin-right: 5px;
+	
+}
+
+.dwgOptionButton{
+	background-color: #bfb7b6; 
+	color: #435058;
+	border: 1px solid black;
+	text-align: center;
+	font-size: 20px;
+	font-family: 'Amatic SC', cursive;
+	flex: 1;
+	padding: 0;
+	margin: 0;
+	
+}
+
+.dwgBlackButton{
+	background-color: black; 
+	color: #435058;
+	border: 1px solid black;
+	text-align: center;
+	font-size: 20px;
+	font-family: 'Amatic SC', cursive;
+	flex: 1;
+	padding: 0;
+	margin: 0;
+}
+
+.dwgRedButton{
+	background-color: #F80707; 
+	color: #435058;
+	border: 1px solid black;
+	text-align: center;
+	font-size: 20px;
+	font-family: 'Amatic SC', cursive;
+	flex: 1;
+	padding: 0;
+	margin: 0;
+}
+
+.dwgBlueButton{
+	background-color: #3498DB; 
+	color: #435058;
+	border: 1px solid black;
+	text-align: center;
+	font-size: 20px;
+	font-family: 'Amatic SC', cursive;
+	flex: 1;
+	padding: 0;
+	margin: 0;
+}
+
+.dwgGreenButton{
+	background-color: #2ECC71; 
+	color: #435058;
+	border: 1px solid black;
+	text-align: center;
+	font-size: 20px;
+	font-family: 'Amatic SC', cursive;
+	flex: 1;
+	padding: 0;
+	margin: 0;
+}
+
+.dwgYellowButton{
+	background-color: #F1C40F; 
+	color: #435058;
+	border: 1px solid black;
+	text-align: center;
+	font-size: 20px;
+	font-family: 'Amatic SC', cursive;
+	flex: 1;
+	padding: 0;
+	margin: 0;
+}
+
+.dwgOptionsButtonHolder{
+	display: flex;
+}
+
+
+.buttonholder{
+	margin-left: 30%;
+	margin-right: 30%;
+	display: flex;
+}
+
