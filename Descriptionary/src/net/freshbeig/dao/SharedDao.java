@@ -43,5 +43,19 @@ public class SharedDao {
 		}		
 		return stackOut;
 	}
+	
+	public void changePlayerNumLims(int min,int max) {
+		try {
+			Connection connection = DBconnection.getConnectionToDatabase();
+			sql = "update player_lims set min_players = ? , max_players = ? where game_name = 'Descriptionary'";
+			statement = connection.prepareStatement(sql);
+			statement.setInt(1, min);
+			statement.setInt(2, max);
+			statement.executeUpdate();
+			
+		} catch(SQLException exception) {
+			exception.printStackTrace();
+		}		
+	}
 
 }

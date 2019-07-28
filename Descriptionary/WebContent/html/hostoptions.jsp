@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
-<%int minPlayers = 6;
-int maxPlayers = 15; %>
+<%int min_players = (int)session.getAttribute("min_players");
+int max_players = (int)session.getAttribute("max_players"); %>
 <html>
 	<head>
 		<meta charset="ISO-8859-1">
@@ -15,7 +15,7 @@ int maxPlayers = 15; %>
 	<div class=center></div>
 	<form action="host" method="post">
 		<select name="playerNum" size="1" class=dropdown>
-			<%for(int i = minPlayers; i <= maxPlayers; i++) { %>
+			<%for(int i = min_players; i <= max_players; i++) { %>
 				<option value="<%=i%>"><%=i%></option>				
 			<%} %>
 		</select>

@@ -18,6 +18,11 @@ public class HostGameServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		if(req.getSession().getAttribute("numPlayers") == null) {
+			HostDao dao = new HostDao();
+			int[] player_lims = dao.getPlayerNumLims();
+			HttpSession session = req.getSession();
+			session.setAttribute("min_players", player_lims[0]);
+			session.setAttribute("max_players", player_lims[1]);
 			req.getRequestDispatcher("/html/hostoptions.jsp").forward(req, resp);
 		} else {
 			if (!(Boolean)req.getSession().getAttribute("gameStarted")) {

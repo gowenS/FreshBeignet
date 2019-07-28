@@ -10,12 +10,12 @@
 </head>
 <body>
 	<div class="content">
-	<h3>Enter the room code from the game host.</h3>
+	
 		<form action="join" method="post">
-			<input type="text" name="game_name" maxlength="4" style="text-transform:uppercase" class=joinTextField>
-			
 			<h3>Enter your name.</h3>		
 			<input type="text" name="player_name" maxlength="12" class=joinTextField>
+			<h3>Enter the room code from the game host.</h3>
+			<input type="text" name="game_name" maxlength="4" style="text-transform:uppercase" class=joinTextField>
 			<button type="submit" class=button1>Join the game.</button>	
 		</form>
 		<%if((String) session.getAttribute("join_error_code") != null) { %>

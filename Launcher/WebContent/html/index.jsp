@@ -15,6 +15,9 @@
 			<button class=button1>Play Descriptionary</button>
 		</form> 			
 		<div class=center></div>
-		<h6>More game options coming soon!</h6>		
+		<h6>More game options coming soon!</h6>	
+		<form action="reconnect" method="get">
+			<button class=button2>Reconnect to an in-progress game.</button>
+		</form> 	
 	</body>
 </html>

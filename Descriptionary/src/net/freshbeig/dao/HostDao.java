@@ -176,4 +176,20 @@ public class HostDao {
 		out.append(")");
 		return out.toString();
 	}
+	
+	public int[] getPlayerNumLims() {
+		int[] out = new int[2];
+		try {
+			Connection connection = DBconnection.getConnectionToDatabase();
+			sql = "select * from player_lims where game_name = 'Descriptionary'";
+			statement = connection.prepareStatement(sql);
+			set = statement.executeQuery();
+			set.next();
+			out[0] = set.getInt("min_players");
+			out[1] = set.getInt("max_players");			
+		} catch(SQLException exception) {
+			exception.printStackTrace();
+		}		
+		return out;
+	}
 }
