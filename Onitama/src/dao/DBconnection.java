@@ -1,4 +1,4 @@
-package net.freshbeig.dao;
+package dao;
 
 import java.io.File;
 import java.io.FileInputStream;

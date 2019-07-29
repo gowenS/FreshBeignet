@@ -1,19 +1,12 @@
 package dao;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Base64;
-import java.util.LinkedList;
 import java.util.Random;
-import java.util.Base64.Decoder;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -34,7 +27,7 @@ public class HostDao {
 			gameName = createGameName(connection);
 
 			// Write the select query
-			sql = "insert into games(game_name, red, game_state) values(?, ? , 0, 0)";
+			sql = "insert into onitama_games(game_name, red) values(?, ?)";
 
 			// Set parameters with PreparedStatement
 			statement = connection.prepareStatement(sql);

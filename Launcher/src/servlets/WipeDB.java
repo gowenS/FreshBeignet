@@ -37,7 +37,10 @@ public class WipeDB extends HttpServlet{
                 statement = connection.prepareStatement(sql);
                 statement.setString(1, curGame);
                 statement.executeUpdate();
-            }            
+            }
+            sql = "delete from onitama_games where game_id > 0";
+            statement = connection.prepareStatement(sql);
+            statement.executeUpdate();
             sql = "select * from imagesfilepath";
             statement = connection.prepareStatement(sql);
             ResultSet directory = statement.executeQuery();

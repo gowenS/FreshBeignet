@@ -25,23 +25,22 @@ public class JoinGameServlet extends HttpServlet {
 		String gameNameAttempt = ((String) req.getParameter("game_name")).toUpperCase();
 		String playerNameAttempt = (String) req.getParameter("player_name");
 		PlayerDao dao = new PlayerDao();
-		int code = dao.joinGame(gameNameAttempt, playerNameAttempt, session);
+		int code = dao.joinGame(gameNameAttempt, playerNameAttempt);
 		switch(code) {
 			case 1: 
 				session.setAttribute("join_error_code", null);
-				session.setAttribute("gameState", 0);
+				session.setAttribute("player_color", "blue");
+				session.setAttribute("player_name", playerNameAttempt);
 				resp.sendRedirect("playgame");
 				break;
 			case 2:
 				session.setAttribute("join_error_code", "Error entering room code. Please try again.");
+				session.setAttribute("player_color", null);
+				session.setAttribute("player_name", null);
 				req.getRequestDispatcher("/html/joingame.jsp").forward(req, resp);
 				break;
 			case 3:
-				session.setAttribute("join_error_code", "The lobby for this game is already full.");
-				req.getRequestDispatcher("/html/joingame.jsp").forward(req, resp);
-				break;
-			case 4:
-				session.setAttribute("join_error_code", "This name has already been chosen. Please choose a different name.");
+				session.setAttribute("join_error_code", "This game is already full.");
 				req.getRequestDispatcher("/html/joingame.jsp").forward(req, resp);
 				break;
 			default:
