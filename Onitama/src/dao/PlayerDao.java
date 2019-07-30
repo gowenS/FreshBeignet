@@ -13,7 +13,7 @@ public class PlayerDao {
 	ResultSet set;
 	
 	// Player joining game 
-	public int joinGame(String gameNameAttempt, String playerNameAttempt){
+	public int joinGame(String gameNameAttempt, String playerNameAttempt, HttpSession session){
 		int code = 0;
 		try {			
 			Connection connection = DBconnection.getConnectionToDatabase();			
@@ -25,10 +25,12 @@ public class PlayerDao {
 				code = 1; // success
 				String blue_exist = set.getString("blue");
 				if(blue_exist != null) return 3; // lobby full error code
-				sql = "insert into " + gameNameAttempt + "(blue) values (?)";
+				sql = "update onitama_games set blue = ? where game_name = ?";
 				statement = connection.prepareStatement(sql);
 				statement.setString(1, playerNameAttempt);
+				statement.setString(2, gameNameAttempt);
 				statement.executeUpdate();
+				session.setAttribute("game_name", gameNameAttempt);
 			} else {
 				return 2; // game doesn't exist error
 			}			

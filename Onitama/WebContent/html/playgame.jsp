@@ -10,5 +10,6 @@
 	</head>
 <body>
 	<h3>Playing Onitama =]</h3>
+	<h2><%=(String) session.getAttribute("game_name") %></h2>
 </body>
 </html>

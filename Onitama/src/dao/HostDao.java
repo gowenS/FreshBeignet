@@ -33,6 +33,7 @@ public class HostDao {
 			statement = connection.prepareStatement(sql);
 			statement.setString(1, gameName);
 			statement.setString(2, host_name);
+			statement.executeUpdate();
 		
 		} catch (SQLException exception) {
 			exception.printStackTrace();

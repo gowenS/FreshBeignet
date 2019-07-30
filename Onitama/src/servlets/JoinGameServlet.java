@@ -25,13 +25,13 @@ public class JoinGameServlet extends HttpServlet {
 		String gameNameAttempt = ((String) req.getParameter("game_name")).toUpperCase();
 		String playerNameAttempt = (String) req.getParameter("player_name");
 		PlayerDao dao = new PlayerDao();
-		int code = dao.joinGame(gameNameAttempt, playerNameAttempt);
+		int code = dao.joinGame(gameNameAttempt, playerNameAttempt, session);
 		switch(code) {
 			case 1: 
 				session.setAttribute("join_error_code", null);
 				session.setAttribute("player_color", "blue");
 				session.setAttribute("player_name", playerNameAttempt);
-				resp.sendRedirect("playgame");
+				resp.sendRedirect("play");
 				break;
 			case 2:
 				session.setAttribute("join_error_code", "Error entering room code. Please try again.");
