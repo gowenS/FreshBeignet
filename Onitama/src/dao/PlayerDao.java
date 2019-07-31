@@ -4,8 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import classes.MoveCard;
 
 public class PlayerDao {
 	PreparedStatement statement;
@@ -31,6 +35,7 @@ public class PlayerDao {
 				statement.setString(2, gameNameAttempt);
 				statement.executeUpdate();
 				session.setAttribute("game_name", gameNameAttempt);
+				buildGameDeck(connection, session, gameNameAttempt);
 			} else {
 				return 2; // game doesn't exist error
 			}			
@@ -47,10 +52,33 @@ public class PlayerDao {
 	}
 	
 	// Create and populate the card deck for the game
-	private void buildGameDeck(Connection connection, HttpSession session) {
-		
-		
+	private void buildGameDeck(Connection connection, HttpSession session, String game_name) {
+		ArrayList<Integer> deck = new ArrayList<>();
+		for (int i = 0; i < 16; i++) {
+			deck.add(i);
+		}
+		Collections.shuffle(deck);
+		try {
+			sql = "update onitama_games set ropt1 = ?, ropt2 = ?, bopt1 = ?, bopt2 = ?, rnext = ?, bnext = ?, player_turn = ? where game_name = ?";
+			statement = connection.prepareStatement(sql);
+			for (int j = 1; j < 5; j++) {
+				statement.setInt(j, deck.get(j-1));
+			}
+			MoveCard card5 = new MoveCard(deck.get(4));
+			if (card5.whichColor() == MoveCard.RED) { // Red goes first
+				statement.setInt(5, deck.get(4));
+				statement.setNull(6, java.sql.Types.NULL);
+				statement.setString(7, "r");
+			} else { // Blue goes first
+				statement.setNull(5, java.sql.Types.NULL);
+				statement.setInt(6, deck.get(4));
+				statement.setString(7, "b");
+			}
+			statement.setString(8, game_name);
+			System.out.println(statement.toString());
+;			statement.executeUpdate();
+		} catch(SQLException exception) {
+			exception.printStackTrace();
+		}		
 	}
-	
-
 }
