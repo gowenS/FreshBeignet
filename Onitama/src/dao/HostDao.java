@@ -25,15 +25,36 @@ public class HostDao {
 			
 			// Create name for game
 			gameName = createGameName(connection);
-
+			String board_pos = "bblbb"
+					+ "nnnnn"
+					+ "nnnnn"
+					+ "nnnnn"
+					+ "rrjrr";
+			String highlight = "00000"
+					+ "00000"
+					+ "00000"
+					+ "00000"
+					+ "00000";
+			String selectable = "00000"
+					+ "00000"
+					+ "00000"
+					+ "00000"
+					+ "00000";
+					
 			// Write the select query
-			sql = "insert into onitama_games(game_name, red) values(?, ?)";
+			sql = "insert into onitama_games(game_name, red, board_pos, highlight, selectable) values(?, ?, ?, ?, ?)";
 
 			// Set parameters with PreparedStatement
 			statement = connection.prepareStatement(sql);
 			statement.setString(1, gameName);
 			statement.setString(2, host_name);
+			statement.setString(3, board_pos);
+			statement.setString(4, highlight);
+			statement.setString(5, selectable);
 			statement.executeUpdate();
+			session.setAttribute("board_pos", board_pos);
+			session.setAttribute("highlight", highlight);
+			session.setAttribute("selectable", selectable);
 		
 		} catch (SQLException exception) {
 			exception.printStackTrace();

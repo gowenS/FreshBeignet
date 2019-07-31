@@ -46,5 +46,11 @@ public class PlayerDao {
 		return code;
 	}
 	
+	// Create and populate the card deck for the game
+	private void buildGameDeck(Connection connection, HttpSession session) {
+		
+		
+	}
+	
 
 }
