@@ -9,12 +9,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import dao.SharedDao;
+import dao.PlayerDao;
 @WebServlet("/play")
 public class PlayGameServlet extends HttpServlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {		
+		PlayerDao dao = new PlayerDao();
+		HttpSession session = req.getSession();
+		dao.getGameState(session);
 		req.getRequestDispatcher("/html/playgame.jsp").forward(req, resp);		
 	}
 

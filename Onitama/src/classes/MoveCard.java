@@ -2,7 +2,8 @@ package classes;
 
 public class MoveCard {
 
-    public static final int BOAR = 1;
+    public static final int BLANK = 0;
+	public static final int BOAR = 1;
     public static final int COBRA = 2;
     public static final int CRAB = 3;
     public static final int CRANE = 4;
@@ -48,12 +49,16 @@ public class MoveCard {
 
     public MoveCard(int type) {
         this.type = type;
-        setAttributes();
+        if (type != BLANK) {
+            setAttributes();
+        }
     }
+        
 
     private void setAttributes() {
 
         switch (type) {
+ 				
             case BOAR:  color = RED;
                         row = new int[]{0 , 1 , 0 , 0};
                         col = new int[]{-1 , 0, 1 , 0};

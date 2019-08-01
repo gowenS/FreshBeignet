@@ -42,7 +42,7 @@ public class HostDao {
 					+ "00000";
 					
 			// Write the select query
-			sql = "insert into onitama_games(game_name, red, board_pos, highlight, selectable) values(?, ?, ?, ?, ?)";
+			sql = "insert into onitama_games(game_name, red, board_pos, highlight, selectable, blue) values(?, ?, ?, ?, ?, ?)";
 
 			// Set parameters with PreparedStatement
 			statement = connection.prepareStatement(sql);
@@ -51,6 +51,7 @@ public class HostDao {
 			statement.setString(3, board_pos);
 			statement.setString(4, highlight);
 			statement.setString(5, selectable);
+			statement.setString(6, selectable);
 			statement.executeUpdate();
 			session.setAttribute("board_pos", board_pos);
 			session.setAttribute("highlight", highlight);
@@ -61,22 +62,7 @@ public class HostDao {
 		}		
 		return gameName;
 	}		
-	
-	// Start game
-	public void initializeGameHost(String gameName) {
-		try {
-			Connection connection = DBconnection.getConnectionToDatabase();
-			sql = "update games set game_state = 1 where game_name like ?";
-			statement = connection.prepareStatement(sql);
-			statement.setString(1, gameName);
-			statement.executeUpdate();
-		} catch(SQLException exception){
-			exception.printStackTrace();
-		}		
-	}
-	
-	
-	
+		
 	// Create name for game and perform checks to ensure name is valid.
 	private String createGameName(Connection connection) {		
 		String gameName = generateString();		
