@@ -28,7 +28,7 @@ public class PlayerDao {
 			if (set.next()) {
 				code = 1; // success
 				String blue_exist = set.getString("blue");
-				if(blue_exist != null) return 3; // lobby full error code
+				if(blue_exist.length() > 0) return 3; // lobby full error code
 				sql = "update onitama_games set blue = ? where game_name = ?";
 				statement = connection.prepareStatement(sql);
 				statement.setString(1, playerNameAttempt);
@@ -82,7 +82,7 @@ public class PlayerDao {
 		}
 		Collections.shuffle(deck);
 		try {
-			sql = "update onitama_games set ropt1 = ?, ropt2 = ?, bopt1 = ?, bopt2 = ?, rnext = ?, bnext = ?, player_turn = ?, rplay = ?, bplay = ? where game_name = ?";
+			sql = "update onitama_games set ropt1 = ?, ropt2 = ?, bopt1 = ?, bopt2 = ?, rnext = ?, bnext = ?, player_turn = ? where game_name = ?";
 			statement = connection.prepareStatement(sql);
 			for (int j = 1; j < 5; j++) {
 				statement.setInt(j, deck.get(j-1));
@@ -99,9 +99,7 @@ public class PlayerDao {
 				statement.setString(7, "b");
 				session.setAttribute("player_turn","b");
 			}
-			statement.setInt(8, 0);
-			statement.setInt(9, 0);
-			statement.setString(10, game_name);
+			statement.setString(8, game_name);
 			System.out.println(statement.toString());
 			statement.executeUpdate();
 		} catch(SQLException exception) {

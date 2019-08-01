@@ -24,7 +24,6 @@ public class HostGameServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {		
 		String player_name = req.getParameter("player_name");
 		HttpSession session = req.getSession();
-		session.setAttribute("player_name", player_name);
 		HostDao dao = new HostDao();
 		String game_name = dao.createGame(player_name, session);
 		session.setAttribute("game_name", game_name);
