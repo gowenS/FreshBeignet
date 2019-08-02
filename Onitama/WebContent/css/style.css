@@ -187,9 +187,7 @@ textarea{
 	
 }
 
-.dwgOptionButton{
-	background-color: #bfb7b6; 
-	color: #435058;
+.moveCard{
 	border: 1px solid black;
 	text-align: center;
 	font-size: 20px;
@@ -211,59 +209,6 @@ textarea{
 	padding: 0;
 	margin: 0;
 }
-
-.dwgRedButton{
-	background-color: #F80707; 
-	color: #435058;
-	border: 1px solid black;
-	text-align: center;
-	font-size: 20px;
-	font-family: 'Amatic SC', cursive;
-	flex: 1;
-	padding: 0;
-	margin: 0;
-}
-
-.dwgBlueButton{
-	background-color: #3498DB; 
-	color: #435058;
-	border: 1px solid black;
-	text-align: center;
-	font-size: 20px;
-	font-family: 'Amatic SC', cursive;
-	flex: 1;
-	padding: 0;
-	margin: 0;
-}
-
-.dwgGreenButton{
-	background-color: #2ECC71; 
-	color: #435058;
-	border: 1px solid black;
-	text-align: center;
-	font-size: 20px;
-	font-family: 'Amatic SC', cursive;
-	flex: 1;
-	padding: 0;
-	margin: 0;
-}
-
-.dwgYellowButton{
-	background-color: #F1C40F; 
-	color: #435058;
-	border: 1px solid black;
-	text-align: center;
-	font-size: 20px;
-	font-family: 'Amatic SC', cursive;
-	flex: 1;
-	padding: 0;
-	margin: 0;
-}
-
-.dwgOptionsButtonHolder{
-	display: flex;
-}
-
 
 .buttonholder{
 	margin-left: 30%;

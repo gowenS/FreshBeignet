@@ -49,16 +49,14 @@ public class MoveCard {
 
     public MoveCard(int type) {
         this.type = type;
-        if (type != BLANK) {
-            setAttributes();
-        }
+        setAttributes();
     }
         
 
     private void setAttributes() {
 
         switch (type) {
- 				
+        	
             case BOAR:  color = RED;
                         row = new int[]{0 , 1 , 0 , 0};
                         col = new int[]{-1 , 0, 1 , 0};
