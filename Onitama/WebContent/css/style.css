@@ -188,6 +188,8 @@ textarea{
 }
 
 .moveCard{
+	width: 90px;
+	height: 51px;
 	border: 1px solid black;
 	text-align: center;
 	font-size: 20px;
@@ -196,6 +198,19 @@ textarea{
 	padding: 0;
 	margin: 0;
 	
+}
+
+.moveCard-flipped {
+  	transform: rotateX(180deg) rotateY(180deg); 
+  	width: 90px;
+	height: 51px;
+	border: 1px solid black;
+	text-align: center;
+	font-size: 20px;
+	font-family: 'Amatic SC', cursive;
+	flex: 1;
+	padding: 0;
+	margin: 0;
 }
 
 .dwgBlackButton{

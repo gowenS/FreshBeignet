@@ -4,28 +4,50 @@
 <%@ page import = "classes.MoveCard" %>
 <%!
 Boolean my_turn;
-String bg;
-private String getMoveCardButton(Boolean turn, String card, HttpSession session) {
+String me;
+String opponent;
+
+private String getMoveCardButton(Boolean turn, String card, HttpSession session, Boolean flip) {
 	int mc = (int)session.getAttribute(card);
-	if (mc > 0) {
+	String bg = "";
+	String flipped = "";
+	if (flip) {
+		flipped = "-flipped";
+	}
+	if (mc != 0) {
 		MoveCard mv_card = new MoveCard(mc);
-		String bg = mv_card.getBG();
+		if (card.substring(card.length()-4).equals("next")) {
+			bg = mv_card.getBGinv();
+		} else {
+			bg = mv_card.getBG();
+		}
 	} else {
-		
+		if (card.charAt(0)=='r'){
+			bg = "images/redcard.png";
+		} else {
+			bg = "images/bluecard.png";	
+		}		
 	}
 	String out;
 	if (turn) {
-		out = "<input type= src=" + bg + " class=moveCard />";
+		out = "<input type=\"image\" src=" + bg + " class=moveCard" + flipped + " />";
 	} else {
-		out = "<img src=" + bg + " class=moveCard >";
+		out = "<img src=" + bg + " class=moveCard" + flipped + " >";
 	}
+	System.out.println(out);
 	return out;
 }
 %>
 <html>
 	<head>
 		<meta charset="ISO-8859-1">
-		<%if ( ((String) session.getAttribute("player_turn")==null) || ( ((String)session.getAttribute("player_color")).charAt(0)) != (((String)session.getAttribute("player_turn")).charAt(0)) ) {
+		<%me = (String) session.getAttribute("player_color");
+		if (me.equals("red")) {
+			opponent = "blue";
+		} else{
+			opponent = "red";
+		}		
+		if ( ((String) session.getAttribute("player_turn")==null) || ( ((String)session.getAttribute("player_color")).charAt(0)) != (((String)session.getAttribute("player_turn")).charAt(0)) ) {
 			my_turn = false;%>  
 		<meta http-equiv="refresh" content=2>
 		<% } else {
@@ -37,16 +59,18 @@ private String getMoveCardButton(Boolean turn, String card, HttpSession session)
 	</head>
 <body>
 	<h3>Room: <%=(String)session.getAttribute("game_name") %></h3>
-	<h2><%=(String)session.getAttribute("blue")%></h2>
-	<%=getMoveCardButton(my_turn, "bnext", session)%>
-	<%=getMoveCardButton(my_turn, "bopt2", session)%>
-	<%=getMoveCardButton(my_turn, "bopt1", session)%>
-	<%=getMoveCardButton(my_turn, "bplay", session)%>
+	<h2><%=opponent %></h2>
+	<h2><%=(String)session.getAttribute(opponent)%></h2>
+	<%=getMoveCardButton(my_turn, opponent.charAt(0) + "next", session, true)%>
+	<%=getMoveCardButton(my_turn, opponent.charAt(0) + "opt2", session, true)%>
+	<%=getMoveCardButton(my_turn, opponent.charAt(0) + "opt1", session, true)%>
+	<%=getMoveCardButton(my_turn, opponent.charAt(0) + "play", session, true)%>
 	<h3><%=(String) session.getAttribute("player_turn")%></h3>
-	<%=getMoveCardButton(my_turn, "rplay", session)%>
-	<%=getMoveCardButton(my_turn, "ropt1", session)%>
-	<%=getMoveCardButton(my_turn, "ropt2", session)%>
-	<%=getMoveCardButton(my_turn, "rnext", session)%>
-	<h2><%=(String) session.getAttribute("red") %></h2>
+	<%=getMoveCardButton(my_turn, me.charAt(0) + "play", session, false)%>
+	<%=getMoveCardButton(my_turn, me.charAt(0) + "opt1", session, false)%>
+	<%=getMoveCardButton(my_turn, me.charAt(0) + "opt2", session, false)%>
+	<%=getMoveCardButton(my_turn, me.charAt(0) + "next", session, false)%>
+	<h2><%=(String) session.getAttribute(me) %></h2>
+	<h2><%=me %></h2>
 </body>
 </html>
