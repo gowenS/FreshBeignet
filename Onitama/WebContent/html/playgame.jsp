@@ -30,11 +30,10 @@ private String getMoveCardButton(Boolean turn, String card, HttpSession session,
 	}
 	String out;
 	if (turn) {
-		out = "<input type=\"image\" src=" + bg + " class=moveCard" + flipped + " />";
+		out = "<button onclick=\"sendBtnClick('" + card + "')\" class=moveCard > <img src=" + bg + " class=moveCard" + flipped +" ></button>";
 	} else {
 		out = "<img src=" + bg + " class=moveCard" + flipped + " >";
 	}
-	System.out.println(out);
 	return out;
 }
 %>
@@ -72,5 +71,14 @@ private String getMoveCardButton(Boolean turn, String card, HttpSession session,
 	<%=getMoveCardButton(my_turn, me.charAt(0) + "next", session, false)%>
 	<h2><%=(String) session.getAttribute(me) %></h2>
 	<h2><%=me %></h2>
+	<script>
+		function sendBtnClick(btn){
+			var xhr = new XMLHttpRequest();
+			xhr.open('POST','play',true);
+			xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+			console.log(btn);
+			xhr.send("btnprs=" + btn);
+		}
+	</script>
 </body>
 </html>

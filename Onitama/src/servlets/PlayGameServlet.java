@@ -20,5 +20,12 @@ public class PlayGameServlet extends HttpServlet {
 		dao.getGameState(session);
 		req.getRequestDispatcher("/html/playgame.jsp").forward(req, resp);		
 	}
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {		
+		HttpSession session = req.getSession();
+		System.out.println(req.getParameter("btnprs"));
+		req.getRequestDispatcher("/html/playgame.jsp").forward(req, resp);		
+	}	
 
 }
