@@ -213,6 +213,31 @@ textarea{
 	margin: 0;
 }
 
+.gridCell {
+	width: 75px;
+	height: 75px;
+	border: 1px solid black;
+	text-align: center;
+	font-size: 20px;
+	font-family: 'Amatic SC', cursive;
+	flex: 1;
+	padding: 0;
+	margin: 8px;
+}
+
+.gridCell-flipped {
+	transform: rotateX(180deg) rotateY(180deg); 
+	width: 75px;
+	height: 75px;
+	border: 1px solid black;
+	text-align: center;
+	font-size: 20px;
+	font-family: 'Amatic SC', cursive;
+	flex: 1;
+	padding: 0;
+	margin: 8px;
+}
+
 .dwgBlackButton{
 	background-color: black; 
 	color: #435058;

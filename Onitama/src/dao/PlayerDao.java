@@ -78,7 +78,7 @@ public class PlayerDao {
 	private void buildGameDeck(Connection connection, HttpSession session, String game_name) {
 		ArrayList<Integer> deck = new ArrayList<>();
 		for (int i = 0; i < 16; i++) {
-			deck.add(i);
+			deck.add(i+1);
 		}
 		Collections.shuffle(deck);
 		try {

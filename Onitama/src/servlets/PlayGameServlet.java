@@ -27,5 +27,5 @@ public class PlayGameServlet extends HttpServlet {
 		System.out.println(req.getParameter("btnprs"));
 		req.getRequestDispatcher("/html/playgame.jsp").forward(req, resp);		
 	}	
-
+	
 }
