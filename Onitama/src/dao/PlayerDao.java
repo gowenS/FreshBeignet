@@ -63,11 +63,12 @@ public class PlayerDao {
 	
 	// Move Card is pressed
 	private void chooseMove(String button,HttpSession session,Connection connection) {
+		// TODO FIX THIS METHOD. IT GETS RID OF CARDS IN SOME CASES
 		if (button.contains("opt")) {
 			char end = button.charAt(4);
 			deselectAll(session);
 			if (((int) session.getAttribute(button.charAt(0)+"play")) != 0) {
-				if (end == 1) {
+				if (end == '1') {
 					session.setAttribute(button.charAt(0) + "opt2", (int) session.getAttribute(button.charAt(0)+"play"));
 				} else {
 					session.setAttribute(button.charAt(0) + "opt1", (int) session.getAttribute(button.charAt(0)+"play"));

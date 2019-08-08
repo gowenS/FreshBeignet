@@ -150,7 +150,7 @@ private String reverseString(String in) {
 		}
 	</script>
 	<script>
-		window.setInterval(checkRF,500);
+		window.setInterval(checkRF,250);
 		function checkRF(){
 			var refreshCheck = new XMLHttpRequest();
 			refreshCheck.open('POST','checkrefresh',true);
