@@ -13,35 +13,25 @@ public class SharedDao {
 	String sql;
 	ResultSet set;
 	
-	// Get the "Stack" of history of a single player's drawing, including all corresponding descriptions
-	// and drawings from other players
-	public LinkedList<String> getStack(HttpSession session, String gameName, int player, int numPlayers) {
-		LinkedList<String> stackOut = new LinkedList<String>();
+	public Boolean checkForRefresh(HttpSession session) {
+		Connection connection = DBconnection.getConnectionToDatabase();
+		String game_name = (String) session.getAttribute("game_name");
+		int gs1 = (int) session.getAttribute("game_state");
+		int gs2 = gs1;
+		sql = "select game_state from onitama_games where game_name = ?";
 		try {
-			Connection connection = DBconnection.getConnectionToDatabase();
-			String turnID;			
-			for(int i = 1; i <= numPlayers; i++) {
-				turnID = "turn" + i;
-				sql = "select player_name," + turnID + " from " + gameName + " where player_id = ?";
-				statement = connection.prepareStatement(sql);
-				int pID = player + (i-1);
-				if(pID > numPlayers) pID = pID - numPlayers;
-				statement.setInt(1, pID);
-				set = statement.executeQuery();
-				set.next();
-				stackOut.add(set.getString("player_name"));
-				stackOut.add(set.getString(turnID));				
-			}			
-			sql = "select player_name from " + gameName + " where player_id = ?";
 			statement = connection.prepareStatement(sql);
-			statement.setInt(1,player);
+			statement.setString(1, game_name);
 			set = statement.executeQuery();
 			set.next();
-			session.setAttribute("current_name", set.getString("player_name"));			
+			gs2 = set.getInt("game_state");
 		} catch(SQLException exception) {
 			exception.printStackTrace();
-		}		
-		return stackOut;
+		}
+		if (gs2 > gs1) {
+			return true;
+		}
+		return false;		
 	}
 
 }

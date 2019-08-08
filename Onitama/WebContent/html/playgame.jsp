@@ -29,7 +29,7 @@ private String getMoveCardButton(Boolean turn, String card, HttpSession session,
 		}		
 	}
 	String out;
-	if (turn) {
+	if (turn && !card.contains("next") && !flip && mc!=0) {  // The only Move Cards which are buttons are those which belong to the player whose turn it is and are not empty
 		out = "<button onclick=\"sendBtnClick('" + card + "')\" > <img src=" + bg + " class=moveCard" + flipped +" ></button>";
 	} else {
 		out = "<img src=" + bg + " class=moveCard" + flipped + " >";
@@ -108,26 +108,27 @@ private String reverseString(String in) {
 %>
 <html>
 	<head>
-		<meta charset="ISO-8859-1">
-		<% me = (String) session.getAttribute("player_color");
-		if (me.equals("red")) {
-			opponent = "blue";
-		} else{
-			opponent = "red";
-		}		
-		if ( ((String) session.getAttribute("player_turn")==null) || ( ((String)session.getAttribute("player_color")).charAt(0)) != (((String)session.getAttribute("player_turn")).charAt(0)) ) {
-			my_turn = false;%>  
-		<meta http-equiv="refresh" content=2>
-		<% } else {
-			my_turn = true;
-		}%>
+		<meta charset="ISO-8859-1">		
 		<title>Onitama | Fresh Beignet</title>
 		<link rel="stylesheet" href="css/style.css">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	</head>
 <body>
+	<% 
+	me = (String) session.getAttribute("player_color");
+	if (me.equals("red")) {
+		opponent = "blue";
+	} else{
+		opponent = "red";
+	}		
+	if ( ((String) session.getAttribute("player_turn")==null) || ( ((String)session.getAttribute("player_color")).charAt(0)) != (((String)session.getAttribute("player_turn")).charAt(0)) ) {
+		my_turn = false;
+	} else {
+		my_turn = true;
+	}
+	
+	%>
 	<h3>Room: <%=(String)session.getAttribute("game_name") %></h3>
-	<h2><%=opponent %></h2>
 	<h2><%=(String)session.getAttribute(opponent)%></h2>
 	<%=getMoveCardButton(my_turn, opponent.charAt(0) + "next", session, true)%>
 	<%=getMoveCardButton(my_turn, opponent.charAt(0) + "opt2", session, true)%>
@@ -139,7 +140,6 @@ private String reverseString(String in) {
 	<%=getMoveCardButton(my_turn, me.charAt(0) + "opt2", session, false)%>
 	<%=getMoveCardButton(my_turn, me.charAt(0) + "next", session, false)%>
 	<h2><%=(String) session.getAttribute(me) %></h2>
-	<h2><%=me %></h2>
 	<script>
 		function sendBtnClick(btn){
 			var xhr = new XMLHttpRequest();
@@ -147,6 +147,20 @@ private String reverseString(String in) {
 			xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 			console.log(btn);
 			xhr.send("btnprs=" + btn);
+		}
+	</script>
+	<script>
+		window.setInterval(checkRF,500);
+		function checkRF(){
+			var refreshCheck = new XMLHttpRequest();
+			refreshCheck.open('POST','checkrefresh',true);
+			refreshCheck.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+			refreshCheck.onload = function () {
+				if (refreshCheck.response === "REFRESH") {
+					location.reload();
+				}
+			}
+			refreshCheck.send(null);
 		}
 	</script>
 </body>

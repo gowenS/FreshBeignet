@@ -35,7 +35,10 @@ public class PlayerDao {
 				statement.setString(2, gameNameAttempt);
 				statement.executeUpdate();
 				session.setAttribute("game_name", gameNameAttempt);
+				getGameState(session);
 				buildGameDeck(connection, session, gameNameAttempt);
+				session.setAttribute("player_color", "blue");
+				incrementGS(connection, session);
 			} else {
 				return 2; // game doesn't exist error
 			}			
@@ -45,6 +48,45 @@ public class PlayerDao {
 		return code;		
 	}
 	
+	// Handles button press
+	public void buttonPress(String button,HttpSession session) {
+		Connection connection = DBconnection.getConnectionToDatabase();
+		getGameState(session);
+		if (button.contains("opt") || button.contains("play")) {
+			chooseMove(button,session,connection);
+		} else {
+			
+		}
+		incrementGS(connection,session);
+		setGameState(connection,session);
+	}
+	
+	// Move Card is pressed
+	private void chooseMove(String button,HttpSession session,Connection connection) {
+		if (button.contains("opt")) {
+			char end = button.charAt(4);
+			deselectAll(session);
+			if (((int) session.getAttribute(button.charAt(0)+"play")) != 0) {
+				if (end == 1) {
+					session.setAttribute(button.charAt(0) + "opt2", (int) session.getAttribute(button.charAt(0)+"play"));
+				} else {
+					session.setAttribute(button.charAt(0) + "opt1", (int) session.getAttribute(button.charAt(0)+"play"));
+				}
+			}
+			session.setAttribute(button.charAt(0)+"play", (int) session.getAttribute(button));
+			session.setAttribute(button, 0);
+		} else {
+			if ((int) session.getAttribute(button.charAt(0)+"opt1") == 0) {
+				session.setAttribute(button.charAt(0)+"opt1", (int)session.getAttribute(button));
+				session.setAttribute(button, 0);
+			} else {
+				session.setAttribute(button.charAt(0)+"opt2", (int)session.getAttribute(button));
+				session.setAttribute(button, 0);
+			}
+		}		
+	}
+	
+	// Get game attributes
 	public void getGameState(HttpSession session) {
 		try {
 			Connection connection = DBconnection.getConnectionToDatabase();			
@@ -67,13 +109,37 @@ public class PlayerDao {
 			session.setAttribute("bnext", set.getInt("bnext"));
 			session.setAttribute("rplay", set.getInt("rplay"));
 			session.setAttribute("bplay", set.getInt("bplay"));
+			session.setAttribute("game_state", set.getInt("game_state"));
 		} catch(SQLException exception) {
 			exception.printStackTrace();
 		}	
 	}
 	
+	// Set game attributes
+	public void setGameState(Connection connection, HttpSession session) {
+		try {
+			sql = "update onitama_games set board_pos=?, highlight=?, selectable=?, player_turn = ?, ropt1 = ?, ropt2 = ?, bopt1 = ?, bopt2 = ?, rnext = ?, bnext = ?, rplay = ?, bplay = ? where game_name = ?";
+			statement = connection.prepareStatement(sql);
+			statement.setString(1, (String) session.getAttribute("board_pos"));
+			statement.setString(2, (String) session.getAttribute("highlight"));
+			statement.setString(3, (String) session.getAttribute("selectable"));
+			statement.setString(4, (String) session.getAttribute("player_turn"));
+			statement.setInt(5, (int) session.getAttribute("ropt1"));
+			statement.setInt(6, (int) session.getAttribute("ropt2"));
+			statement.setInt(7, (int) session.getAttribute("bopt1"));
+			statement.setInt(8, (int) session.getAttribute("bopt2"));
+			statement.setInt(9, (int) session.getAttribute("rnext"));
+			statement.setInt(10, (int) session.getAttribute("bnext"));
+			statement.setInt(11, (int) session.getAttribute("rplay"));
+			statement.setInt(12, (int) session.getAttribute("bplay"));
+			statement.setString(13, (String) session.getAttribute("game_name"));
+			statement.executeUpdate();
+		} catch(SQLException exception) {
+			exception.printStackTrace();
+		}	
+	}
 	
-	
+		
 	// Create and populate the card deck for the game
 	private void buildGameDeck(Connection connection, HttpSession session, String game_name) {
 		ArrayList<Integer> deck = new ArrayList<>();
@@ -81,29 +147,45 @@ public class PlayerDao {
 			deck.add(i+1);
 		}
 		Collections.shuffle(deck);
+		session.setAttribute("ropt1", deck.get(0));
+		session.setAttribute("ropt2", deck.get(1));
+		session.setAttribute("bopt1", deck.get(2));
+		session.setAttribute("bopt2", deck.get(3));
+		MoveCard card5 = new MoveCard(deck.get(4));
+		if (card5.whichColor() == MoveCard.RED) { // Red goes first
+			session.setAttribute("rnext", deck.get(4));
+			session.setAttribute("bnext", 0);
+			session.setAttribute("player_turn","r");
+		} else { // Blue goes first
+			session.setAttribute("rnext", 0);
+			session.setAttribute("bnext", deck.get(4));
+			session.setAttribute("player_turn","b");
+		}
+		setGameState(connection,session);
+	}
+	
+	// Deselect all cells
+	private void deselectAll(HttpSession session) {
+		String selectable = "00000"
+				+ "00000"
+				+ "00000"
+				+ "00000"
+				+ "00000";	
+		session.setAttribute("selectable", selectable);
+	}	
+	
+	private void incrementGS(Connection connection,HttpSession session) {
+		String game_name = (String) session.getAttribute("game_name");
+		int game_state = ((int) session.getAttribute("game_state")) + 1;
 		try {
-			sql = "update onitama_games set ropt1 = ?, ropt2 = ?, bopt1 = ?, bopt2 = ?, rnext = ?, bnext = ?, player_turn = ? where game_name = ?";
+			sql = "update onitama_games set game_state = ? where game_name like ?";
 			statement = connection.prepareStatement(sql);
-			for (int j = 1; j < 5; j++) {
-				statement.setInt(j, deck.get(j-1));
-			}
-			MoveCard card5 = new MoveCard(deck.get(4));
-			if (card5.whichColor() == MoveCard.RED) { // Red goes first
-				statement.setInt(5, deck.get(4));
-				statement.setInt(6, 0);
-				statement.setString(7, "r");
-				session.setAttribute("player_turn","r");
-			} else { // Blue goes first
-				statement.setInt(5, 0);
-				statement.setInt(6, deck.get(4));
-				statement.setString(7, "b");
-				session.setAttribute("player_turn","b");
-			}
-			statement.setString(8, game_name);
-			System.out.println(statement.toString());
-			statement.executeUpdate();
+			statement.setInt(1, game_state);
+			statement.setString(2, game_name);
+			statement.executeUpdate();			
 		} catch(SQLException exception) {
 			exception.printStackTrace();
-		}		
+		}	
 	}
+	
 }
