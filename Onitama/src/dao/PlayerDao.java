@@ -10,6 +10,7 @@ import java.util.Collections;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import classes.MoveCard;
+import servlets.RefreshServlet;
 
 public class PlayerDao {
 	PreparedStatement statement;
@@ -55,15 +56,86 @@ public class PlayerDao {
 		if (button.contains("opt") || button.contains("play")) {
 			chooseMove(button,session,connection);
 		} else {
-			
+			gridPress(button,session);
 		}
 		incrementGS(connection,session);
 		setGameState(connection,session);
 	}
 	
+	// Grid cell is pressed
+	private void gridPress(String button, HttpSession session) {
+		System.out.println("IN GRIDPRESS");
+		if (((int)session.getAttribute(((String)session.getAttribute("player_color")).charAt(0)+"play"))!=0){ // Is a move card chosen?
+			if (amIme(button,session)) {
+				deselectAll(session);
+				showLegalMoves(button,session);
+			}
+		}
+	}
+	
+	
+	// Shows the available moves for the player selecting the player piece
+	private void showLegalMoves(String button, HttpSession session) {
+		System.out.println("IN SHOWLEGALS");
+		String player_color = (String) session.getAttribute("player_color");
+        String selectable; 
+		MoveCard cardChosen = new MoveCard((int) session.getAttribute(player_color.charAt(0) + "play"));
+		int[] movePlayer = convNumToPos(button);
+		int row = movePlayer[0];
+		int col = movePlayer[1];
+		int rowCheck = -1;
+		int colCheck = -1;
+		int[] moveRow = cardChosen.getRow();
+		int[] moveCol = cardChosen.getCol();
+		for (int spot = 0; spot < 4; spot++) {
+			if (player_color.charAt(0) == 'r') {
+				rowCheck = row - moveRow[spot];
+                colCheck = col + moveCol[spot];
+			} else {
+				rowCheck = row + moveRow[spot];
+                colCheck = col - moveCol[spot];
+			}
+			if ((rowCheck > -1 && rowCheck < 5) && (colCheck > -1 && colCheck < 5)) {
+                int checkHere = rowCheck*5 + colCheck;
+                if (!amIme(Integer.toString(checkHere),session)) {
+                	selectable = (String) session.getAttribute("selectable");
+                	StringBuilder new_selectable = new StringBuilder(selectable);
+                    new_selectable.setCharAt(checkHere, '1');
+                    session.setAttribute("selectable", new_selectable.toString());
+                    System.out.println(new_selectable.toString());
+                }
+            }			
+		}
+	}
+	
+	// Convert single num pos to [row,col] notation	
+	private int[] convNumToPos(String in) {
+		int num = Integer.parseInt(in);
+		int[] out = new int[2];
+		out[0] = num/5;
+		out[1] = num%5;
+ 		return out;
+	}	
+	
+	// Determine if player piece selected belongs to the player who selected the piece
+	private Boolean amIme(String button, HttpSession session) {
+		Boolean out = false;
+		String player_color = (String) session.getAttribute("player_color");
+		System.out.println("amIme, color = " + player_color + " button " +button);
+		String board_pos = (String) session.getAttribute("board_pos");
+		if (player_color.charAt(0) == 'r') {
+			if ((board_pos.charAt(Integer.parseInt(button)) == 'r') || (board_pos.charAt(Integer.parseInt(button)) == 'j')) {
+				return true;
+			}
+		} else {
+			if ((board_pos.charAt(24-Integer.parseInt(button)) == 'b') || (24-board_pos.charAt(Integer.parseInt(button)) == 'l')) {
+				return true;
+			}		}
+		return out;
+	}
+	
 	// Move Card is pressed
 	private void chooseMove(String button,HttpSession session,Connection connection) {
-		// TODO FIX THIS METHOD. IT GETS RID OF CARDS IN SOME CASES
 		if (button.contains("opt")) {
 			char end = button.charAt(4);
 			deselectAll(session);
@@ -89,11 +161,12 @@ public class PlayerDao {
 	
 	// Get game attributes
 	public void getGameState(HttpSession session) {
+		String game_name = (String) session.getAttribute("game_name");
 		try {
 			Connection connection = DBconnection.getConnectionToDatabase();			
 			sql = "select * from onitama_games where game_name like ?";
 			statement = connection.prepareStatement(sql);
-			statement.setString(1, (String) session.getAttribute("game_name"));
+			statement.setString(1, game_name);
 			set = statement.executeQuery();
 			set.next();
 			session.setAttribute("board_pos", set.getString("board_pos"));
@@ -110,7 +183,7 @@ public class PlayerDao {
 			session.setAttribute("bnext", set.getInt("bnext"));
 			session.setAttribute("rplay", set.getInt("rplay"));
 			session.setAttribute("bplay", set.getInt("bplay"));
-			session.setAttribute("game_state", set.getInt("game_state"));
+			session.setAttribute("game_state", RefreshServlet.getGameState(game_name));
 		} catch(SQLException exception) {
 			exception.printStackTrace();
 		}	
@@ -177,16 +250,16 @@ public class PlayerDao {
 	
 	private void incrementGS(Connection connection,HttpSession session) {
 		String game_name = (String) session.getAttribute("game_name");
-		int game_state = ((int) session.getAttribute("game_state")) + 1;
-		try {
-			sql = "update onitama_games set game_state = ? where game_name like ?";
-			statement = connection.prepareStatement(sql);
-			statement.setInt(1, game_state);
-			statement.setString(2, game_name);
-			statement.executeUpdate();			
-		} catch(SQLException exception) {
-			exception.printStackTrace();
-		}	
-	}
-	
+//		int game_state = ((int) session.getAttribute("game_state")) + 1;
+//		try {
+//			sql = "update onitama_games set game_state = ? where game_name like ?";
+//			statement = connection.prepareStatement(sql);
+//			statement.setInt(1, game_state);
+//			statement.setString(2, game_name);
+//			statement.executeUpdate();			
+//		} catch(SQLException exception) {
+//			exception.printStackTrace();
+//		}	
+		RefreshServlet.incrementGameState(game_name);
+	}	
 }

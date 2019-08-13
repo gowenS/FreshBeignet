@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import dao.HostDao;
+import servlets.RefreshServlet;
 
 @WebServlet("/host")
 public class HostGameServlet extends HttpServlet {	
@@ -28,6 +29,8 @@ public class HostGameServlet extends HttpServlet {
 		String game_name = dao.createGame(player_name, session);
 		session.setAttribute("game_name", game_name);
 		session.setAttribute("player_color", "red");
+		session.setAttribute("game_state", 0);
+		RefreshServlet.incrementGameState(game_name);
 		resp.sendRedirect("play");	
 	}
 }
