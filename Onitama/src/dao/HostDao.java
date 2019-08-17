@@ -42,7 +42,7 @@ public class HostDao {
 					+ "00000";
 					
 			// Write the select query
-			sql = "insert into onitama_games(game_name, red, board_pos, highlight, selectable, blue, ropt1, ropt2, bopt1, bopt2, rnext, bnext, rplay, bplay, game_state) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			sql = "insert into onitama_games(game_name, red, board_pos, highlight, selectable, blue, ropt1, ropt2, bopt1, bopt2, rnext, bnext, rplay, bplay, game_state, win) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 			// Set parameters with PreparedStatement
 			statement = connection.prepareStatement(sql);
@@ -61,6 +61,7 @@ public class HostDao {
 			statement.setInt(13, 0);
 			statement.setInt(14, 0);
 			statement.setInt(15, 0);
+			statement.setInt(16, 0);
 			statement.executeUpdate();
 		
 		} catch (SQLException exception) {

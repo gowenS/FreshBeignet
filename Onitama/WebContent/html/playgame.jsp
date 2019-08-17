@@ -47,23 +47,15 @@ private String getGameBoard(Boolean turn, HttpSession session) {
 	String flipped = "";
 	int num;
 	if (player_color.equals("blue")) {
-		board_pos = reverseString(board_pos);
-		selectable = reverseString(selectable);
-		highlight = reverseString(highlight);
 		invert = true;
 		flipped = "-flipped";
 	}
 	for (int i = 0; i<25; i++){
-		if(invert) {
-			num = i;
-		} else{
-			num = 24-i;
-		}
-		if ( i%5 == 0){
+		if ( i % 5 == 0){
 			out.append("<br/>");
 		} 
 		if (my_turn) {
-			out.append("<button onclick=\"sendBtnClick('" + Integer.toString(num) + "')\"  ><img src=" + getGridCellImgSource(board_pos.charAt(i),selectable.charAt(i),highlight.charAt(i)) + " class=gridCell" + flipped +" ></button> \n");
+			out.append("<button onclick=\"sendBtnClick('" + Integer.toString(i) + "')\"  ><img src=" + getGridCellImgSource(board_pos.charAt(i),selectable.charAt(i),highlight.charAt(i)) + " class=gridCell" + flipped +" ></button> \n");
 		} else { 
 			out.append("<img src=" + getGridCellImgSource(board_pos.charAt(i),selectable.charAt(i),highlight.charAt(i)) + " class=gridCell" + flipped + " > \n");
 		}
@@ -90,6 +82,11 @@ private String getGridCellImgSource(Character pos, Character selected, Character
 		case 'j':
 			out.append("masterred");
 			break;
+		case 'q':
+			out.append("platformred");
+			break;
+		case 'w':
+			out.append("platformblue");
 	}
 	if (selected == '1'){
 		out.append("selectable");
