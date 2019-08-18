@@ -309,21 +309,20 @@ public class PlayerDao {
 	}	
 	
 	private void distributeCards(HttpSession session) {
+		Character me = ((String) session.getAttribute("player_color")).charAt(0);
+		Character opp;
+		if (me=='r') {
+			opp = 'b';
+		} else {
+			opp = 'r';
+		}
+		session.setAttribute(opp + "next", (int) session.getAttribute(me + "play"));
+		session.setAttribute(me + "play", 0);
 		
 	}
 	
 	private void incrementGS(Connection connection,HttpSession session) {
-		String game_name = (String) session.getAttribute("game_name");
-//		int game_state = ((int) session.getAttribute("game_state")) + 1;
-//		try {
-//			sql = "update onitama_games set game_state = ? where game_name like ?";
-//			statement = connection.prepareStatement(sql);
-//			statement.setInt(1, game_state);
-//			statement.setString(2, game_name);
-//			statement.executeUpdate();			
-//		} catch(SQLException exception) {
-//			exception.printStackTrace();
-//		}	
+		String game_name = (String) session.getAttribute("game_name");	
 		RefreshServlet.incrementGameState(game_name);
 	}	
 	
