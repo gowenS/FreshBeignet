@@ -30,7 +30,7 @@ private String getMoveCardButton(Boolean turn, String card, HttpSession session,
 	}
 	String out;
 	if (turn && !card.contains("next") && !flip && mc!=0) {  // The only Move Cards which are buttons are those which belong to the player whose turn it is and are not empty
-		out = "<button onclick=\"sendBtnClick('" + card + "')\" > <img src=" + bg + " class=moveCard" + flipped +" ></button>";
+		out = "<button onclick=\"sendBtnClick('" + card + "')\" class=moveCardCellHolder > <img src=" + bg + " class=moveCard" + flipped +" ></button>";
 	} else {
 		out = "<img src=" + bg + " class=moveCard" + flipped + " >";
 	}
@@ -55,7 +55,7 @@ private String getGameBoard(Boolean turn, HttpSession session) {
 			out.append("<br/>");
 		} 
 		if (my_turn) {
-			out.append("<button onclick=\"sendBtnClick('" + Integer.toString(i) + "')\"  ><img src=" + getGridCellImgSource(board_pos.charAt(i),selectable.charAt(i),highlight.charAt(i)) + " class=gridCell" + flipped +" ></button> \n");
+			out.append("<button onclick=\"sendBtnClick('" + Integer.toString(i) + "')\" class=gridCellHolder ><img src=" + getGridCellImgSource(board_pos.charAt(i),selectable.charAt(i),highlight.charAt(i)) + " class=gridCell" + flipped +" ></button> \n");
 		} else { 
 			out.append("<img src=" + getGridCellImgSource(board_pos.charAt(i),selectable.charAt(i),highlight.charAt(i)) + " class=gridCell" + flipped + " > \n");
 		}

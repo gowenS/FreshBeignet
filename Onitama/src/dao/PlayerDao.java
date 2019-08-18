@@ -66,7 +66,6 @@ public class PlayerDao {
 	
 	// Grid cell is pressed
 	private void gridPress(String button, HttpSession session) {
-		System.out.println("IN GRIDPRESS");
 		String selectable = (String) session.getAttribute("selectable");
 		StringBuilder board_pos = new StringBuilder((String) session.getAttribute("board_pos"));
 		if (((int)session.getAttribute(((String)session.getAttribute("player_color")).charAt(0)+"play"))!=0){ // Is a move card chosen?
@@ -78,7 +77,9 @@ public class PlayerDao {
 				if (opposingKing(button,session)) {
 					session.setAttribute("win", 1);
 				}
-				// TODO add all logic for platforms
+				if (Integer.parseInt(button) == 2 && (board_pos.charAt((int) session.getAttribute("move_player")) == 'l' || board_pos.charAt((int) session.getAttribute("move_player")) == 'j')) {
+					session.setAttribute("win", 1);
+				}
 				board_pos.setCharAt(Integer.parseInt(button), board_pos.charAt((int) session.getAttribute("move_player")));
 				if ((int) session.getAttribute("move_player") == 2) {
 					if (((String) session.getAttribute("player_color")).charAt(0) == 'r') {
@@ -98,6 +99,9 @@ public class PlayerDao {
 				deselectAll(session);
 				session.setAttribute("move_player", null);
 				distributeCards(session);
+				if ((int) session.getAttribute("win") == 1) {
+					//gameOver(session);
+				}
 			}	
 		}
 		session.setAttribute("board_pos", board_pos.toString());
@@ -106,7 +110,6 @@ public class PlayerDao {
 	
 	// Shows the available moves for the player selecting the player piece
 	private void showLegalMoves(String button, HttpSession session) {
-		System.out.println("IN SHOWLEGALS");
 		session.setAttribute("move_player", Integer.parseInt(button));
 		String player_color = (String) session.getAttribute("player_color");
         String selectable; 
@@ -318,7 +321,14 @@ public class PlayerDao {
 		}
 		session.setAttribute(opp + "next", (int) session.getAttribute(me + "play"));
 		session.setAttribute(me + "play", 0);
-		
+		if (((int) session.getAttribute(me+"opt1")) == 0) {
+			session.setAttribute(me+"opt1", ((int)session.getAttribute(me+"next")));
+			session.setAttribute(me+"next", 0);
+		} else {
+			session.setAttribute(me+"opt2", ((int)session.getAttribute(me+"next")));
+			session.setAttribute(me+"next", 0);
+		}
+		session.setAttribute("player_turn", opp.toString());		
 	}
 	
 	private void incrementGS(Connection connection,HttpSession session) {
