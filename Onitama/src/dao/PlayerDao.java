@@ -61,7 +61,11 @@ public class PlayerDao {
 			}
 			incrementGS(connection,session);
 			setGameState(connection,session);
-		}		
+		} else {
+			if (button.equals("new_game")) {
+				resetGame(session);
+			}
+		}
 	}
 	
 	// Grid cell is pressed
@@ -342,5 +346,23 @@ public class PlayerDao {
 			out.append(in.charAt(i));
 		}
 		return out.toString();
+	}
+	
+	private void resetGame(HttpSession session) {
+		String game_name = (String) session.getAttribute("game_name");
+		Connection connection = DBconnection.getConnectionToDatabase();
+		RefreshServlet.game_state.replace((String)session.getAttribute("game_name"), 1);
+		deselectAll(session);
+		String board_pos = "bblbb"
+					+ "nnnnn"
+					+ "nnnnn"
+					+ "nnnnn"
+					+ "rrjrr";
+		if(((String) session.getAttribute("player_color")).charAt(0) == 'b') {
+			board_pos = (new StringBuilder(board_pos).reverse()).toString();
+		}
+		session.setAttribute("board_pos", board_pos);
+		session.setAttribute("win", 0);				
+		buildGameDeck(connection, session, game_name);
 	}
 }

@@ -13,6 +13,9 @@
 		<img src="images/fblogo.png" alt="Freshest Beignet" class=center >
 		<form action="Descriptionary" method="get">
 			<button class=button1>Play Descriptionary</button>
+		</form> 
+		<form action="Onitama" method="get">
+			<button class=button1>Play Onitama</button>
 		</form> 			
 		<div class=center></div>
 		<h6>More game options coming soon!</h6>	

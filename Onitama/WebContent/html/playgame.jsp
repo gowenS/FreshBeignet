@@ -6,6 +6,7 @@
 Boolean my_turn;
 String me;
 String opponent;
+Boolean win = false;
 
 private String getMoveCardButton(Boolean turn, String card, HttpSession session, Boolean flip) {
 	int mc = (int)session.getAttribute(card);
@@ -123,10 +124,16 @@ private String reverseString(String in) {
 	} else {
 		my_turn = true;
 	}
-	
+	if((int) session.getAttribute("win") == 1){
+		win = true;
+	} else {
+		win = false;
+	}
 	%>
 	<h3>Room: <%=(String)session.getAttribute("game_name") %></h3>
-	<h2><%=(String)session.getAttribute(opponent)%></h2>
+	<h3><% if (!my_turn){ %>--<% } %>
+	<%=(String)session.getAttribute(opponent)%>
+	<% if(!my_turn) { %>--<% }%></h3>	
 	<%=getMoveCardButton(my_turn, opponent.charAt(0) + "next", session, true)%>
 	<%=getMoveCardButton(my_turn, opponent.charAt(0) + "opt2", session, true)%>
 	<%=getMoveCardButton(my_turn, opponent.charAt(0) + "opt1", session, true)%>
@@ -136,7 +143,12 @@ private String reverseString(String in) {
 	<%=getMoveCardButton(my_turn, me.charAt(0) + "opt1", session, false)%>
 	<%=getMoveCardButton(my_turn, me.charAt(0) + "opt2", session, false)%>
 	<%=getMoveCardButton(my_turn, me.charAt(0) + "next", session, false)%>
-	<h2><%=(String) session.getAttribute(me) %></h2>
+	<h3><% if (my_turn){ %>--<% } %>
+	<%=(String)session.getAttribute(me)%>
+	<% if(my_turn) { %>--<% } %></h3>
+	<% if (win) { %>
+		<button onClick=sendBtnClick("new_game") class=button1 >Play Again</button>
+	<% } %>
 	<script>
 		function sendBtnClick(btn){
 			var xhr = new XMLHttpRequest();
