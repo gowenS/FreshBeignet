@@ -97,7 +97,7 @@ public class PlayerDao {
 				}		
 				deselectAll(session);
 				session.setAttribute("move_player", null);
-//				giveCards(session);
+				distributeCards(session);
 			}	
 		}
 		session.setAttribute("board_pos", board_pos.toString());
@@ -272,8 +272,7 @@ public class PlayerDao {
 		} catch(SQLException exception) {
 			exception.printStackTrace();
 		}	
-	}
-	
+	}	
 		
 	// Create and populate the card deck for the game
 	private void buildGameDeck(Connection connection, HttpSession session, String game_name) {
@@ -308,6 +307,10 @@ public class PlayerDao {
 				+ "00000";	
 		session.setAttribute("selectable", selectable);
 	}	
+	
+	private void distributeCards(HttpSession session) {
+		
+	}
 	
 	private void incrementGS(Connection connection,HttpSession session) {
 		String game_name = (String) session.getAttribute("game_name");
