@@ -156,10 +156,12 @@ private String reverseString(String in) {
 			xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 			console.log(btn);
 			xhr.send("btnprs=" + btn);
+			window.setTimeout(function(){ location.reload(); },250);
 		}
 	</script>
+	<% if ((!my_turn) || (win)) { %>
 	<script>
-		window.setInterval(checkRF,250);
+		window.setInterval(checkRF,400);
 		function checkRF(){
 			var refreshCheck = new XMLHttpRequest();
 			refreshCheck.open('POST','checkrefresh',true);
@@ -172,5 +174,6 @@ private String reverseString(String in) {
 			refreshCheck.send(null);
 		}
 	</script>
+	<% } %>
 </body>
 </html>

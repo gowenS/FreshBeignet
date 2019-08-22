@@ -102,13 +102,13 @@ public class PlayerDao {
 				}		
 				deselectAll(session);
 				session.setAttribute("move_player", null);
-				distributeCards(session);
-				if ((int) session.getAttribute("win") == 1) {
-					//gameOver(session);
-				}
+				distributeCards(session);				
 			}	
 		}
 		session.setAttribute("board_pos", board_pos.toString());
+		if ((int) session.getAttribute("win") == 1) {
+			gameOver(session);
+		}
 	}
 	
 	
@@ -364,5 +364,22 @@ public class PlayerDao {
 		session.setAttribute("board_pos", board_pos);
 		session.setAttribute("win", 0);				
 		buildGameDeck(connection, session, game_name);
+	}
+	
+	private void gameOver(HttpSession session) {
+		StringBuilder board_pos = new StringBuilder((String) session.getAttribute("board_pos"));
+		String player_color = (String) session.getAttribute("player_color");
+		for (int i = 0; i < board_pos.length();i++) {
+			if (player_color.charAt(0) == 'r') {
+				if ((board_pos.charAt(i) == 'b') || (board_pos.charAt(i) == 'l') ) {
+					board_pos.setCharAt(i, 'n');
+				}
+			} else {
+				if ((board_pos.charAt(i) == 'r') || (board_pos.charAt(i) == 'j') ) {
+					board_pos.setCharAt(i, 'n');
+				}
+			}
+		}
+		session.setAttribute("board_pos", board_pos.toString());
 	}
 }
