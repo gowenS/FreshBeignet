@@ -148,8 +148,8 @@ private String reverseString(String in) {
 	<% if(my_turn) { %>--<% } %></h3>
 	<% if (win) { %>
 		<form action="play" method="post">	
-			<input type="checkbox" name="base" value="1" checked>Base Game<br>
-			<input type="checkbox" name="expansion" value="1" >Expansion<br>
+			<input type="checkbox" name="base" value="1" <%= ((((int) session.getAttribute("base")) == 1) ? "checked" : "" )%>>Base Game<br>
+			<input type="checkbox" name="expansion" value="1" <%= ((((int) session.getAttribute("expansion")) == 1) ? "checked" : "" )%>>Expansion<br>
  			<button type="submit" class=button1>Play Again</button>	
 		</form>
 		<%if((String) session.getAttribute("options_error_code") != null) { %>
