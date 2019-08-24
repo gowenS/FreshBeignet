@@ -135,7 +135,6 @@ public class PlayerDao {
                 	StringBuilder new_selectable = new StringBuilder(selectable);
                     new_selectable.setCharAt(checkHere, '1');
                     session.setAttribute("selectable", new_selectable.toString());
-                    System.out.println(new_selectable.toString());
                 }
             }			
 		}
@@ -244,6 +243,8 @@ public class PlayerDao {
 			session.setAttribute("bplay", set.getInt("bplay"));
 			session.setAttribute("game_state", RefreshServlet.getGameState(game_name));
 			session.setAttribute("win", set.getInt("win"));
+			session.setAttribute("base", set.getInt("base"));
+			session.setAttribute("expansion", set.getInt("expansion"));
 		} catch(SQLException exception) {
 			exception.printStackTrace();
 		}	
@@ -253,7 +254,7 @@ public class PlayerDao {
 	public void setGameState(Connection connection, HttpSession session) {
 		String player_color = (String) session.getAttribute("player_color");
 		try {
-			sql = "update onitama_games set board_pos=?, highlight=?, selectable=?, player_turn = ?, ropt1 = ?, ropt2 = ?, bopt1 = ?, bopt2 = ?, rnext = ?, bnext = ?, rplay = ?, bplay = ?, win = ? where game_name = ?";
+			sql = "update onitama_games set board_pos=?, highlight=?, selectable=?, player_turn = ?, ropt1 = ?, ropt2 = ?, bopt1 = ?, bopt2 = ?, rnext = ?, bnext = ?, rplay = ?, bplay = ?, win = ?, base = ?, expansion = ? where game_name = ?";
 			statement = connection.prepareStatement(sql);
 			if (player_color.charAt(0) == 'r') {
 				statement.setString(1, (String) session.getAttribute("board_pos"));
@@ -274,7 +275,9 @@ public class PlayerDao {
 			statement.setInt(11, (int) session.getAttribute("rplay"));
 			statement.setInt(12, (int) session.getAttribute("bplay"));
 			statement.setInt(13, (int) session.getAttribute("win"));
-			statement.setString(14, (String) session.getAttribute("game_name"));
+			statement.setInt(14, (int) session.getAttribute("base"));
+			statement.setInt(15, (int) session.getAttribute("expansion"));
+			statement.setString(16, (String) session.getAttribute("game_name"));
 			statement.executeUpdate();
 		} catch(SQLException exception) {
 			exception.printStackTrace();
@@ -283,8 +286,14 @@ public class PlayerDao {
 		
 	// Create and populate the card deck for the game
 	private void buildGameDeck(Connection connection, HttpSession session, String game_name) {
+		int base = (int) session.getAttribute("base");
+		int expansion = (int) session.getAttribute("expansion");
+		int begin = 0;
+		int end = 16;
+		if (base == 0) begin = 16;
+		if (expansion == 1) end = 32;
 		ArrayList<Integer> deck = new ArrayList<>();
-		for (int i = 0; i < 16; i++) {
+		for (int i = begin; i < end; i++) {
 			deck.add(i+1);
 		}
 		Collections.shuffle(deck);

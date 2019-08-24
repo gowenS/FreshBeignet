@@ -13,9 +13,13 @@
 		<form action="host" method="post">
 			<h3>Enter your name.</h3>		
 			<input type="text" name="player_name" maxlength="12" class=joinTextField>
-			<button type="submit" class=button1>Host the game.</button>	
+			<input type="checkbox" name="base" value="1" checked>Base Game<br>
+			<input type="checkbox" name="expansion" value="1" >Expansion<br>
+ 			<button type="submit" class=button1>Host the game.</button>	
 		</form>
-		
+		<%if((String) session.getAttribute("options_error_code") != null) { %>
+			<h5><%=(String) session.getAttribute("options_error_code") %></h5>
+		<%} %>		
 	</div>
 </body>
 </html>
