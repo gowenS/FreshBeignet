@@ -147,7 +147,14 @@ private String reverseString(String in) {
 	<%=(String)session.getAttribute(me)%>
 	<% if(my_turn) { %>--<% } %></h3>
 	<% if (win) { %>
-		<button onClick=sendBtnClick("new_game") class=button1 >Play Again</button>
+		<form action="play" method="post">	
+			<input type="checkbox" name="base" value="1" checked>Base Game<br>
+			<input type="checkbox" name="expansion" value="1" >Expansion<br>
+ 			<button type="submit" class=button1>Play Again</button>	
+		</form>
+		<%if((String) session.getAttribute("options_error_code") != null) { %>
+			<h5><%=(String) session.getAttribute("options_error_code") %></h5>
+		<%} %>
 	<% } %>
 	<script>
 		function sendBtnClick(btn){
