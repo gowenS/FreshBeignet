@@ -13,7 +13,7 @@ public class HomeServlet extends HttpServlet{
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.getSession().removeAttribute("game_name");
+		req.getSession().removeAttribute("gameName");
 		req.getRequestDispatcher("/html/index.jsp").forward(req, resp);
 	}
 }

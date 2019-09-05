@@ -25,6 +25,7 @@ public class WipeDB extends HttpServlet{
 		String curGame = "";
 		String code = "";
         try{
+        	// Descriptionary
             String sql = "select game_name from games";
             java.sql.PreparedStatement statement = connection.prepareStatement(sql);
             ResultSet allGames = statement.executeQuery();
@@ -37,10 +38,7 @@ public class WipeDB extends HttpServlet{
                 statement = connection.prepareStatement(sql);
                 statement.setString(1, curGame);
                 statement.executeUpdate();
-            }
-            sql = "delete from onitama_games where game_id > 0";
-            statement = connection.prepareStatement(sql);
-            statement.executeUpdate();
+            }       
             sql = "select * from imagesfilepath";
             statement = connection.prepareStatement(sql);
             ResultSet directory = statement.executeQuery();
@@ -50,7 +48,28 @@ public class WipeDB extends HttpServlet{
             File[] listFiles = dir.listFiles();
             for(File file:listFiles) {
             	file.delete();
-            }            
+            }        
+            
+            // Codenames
+            sql = "select game_name from codenames_games";
+            statement = connection.prepareStatement(sql);
+            allGames = statement.executeQuery();
+            while(allGames.next()){
+                curGame = allGames.getString("game_name");
+                sql = "drop table if exists " + curGame + "_players";
+                statement = connection.prepareStatement(sql);
+                statement.executeUpdate();
+            }
+            sql = "delete from codenames_games where game_id > 0";
+            statement = connection.prepareStatement(sql);
+            statement.executeUpdate();            
+            
+            // Onitama
+            sql = "delete from onitama_games where game_id > 0";
+            statement = connection.prepareStatement(sql);
+            statement.executeUpdate();
+            
+                
             code = "Successfully cleared Database";
         } catch(SQLException exception){        	
         	code = "Did not fully clear Database.";

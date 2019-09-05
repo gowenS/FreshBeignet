@@ -19,10 +19,10 @@ public class RefreshServlet extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {		
 		HttpSession session = req.getSession();
-		String game_name = (String) session.getAttribute("game_name");
-		int game_sesh_st = (int) session.getAttribute("game_state");
+		String gameName = (String) session.getAttribute("gameName");
+		int game_sesh_st = (int) session.getAttribute("gameState");
 		Boolean refreshNow = false;
-		if (game_sesh_st != game_state.get(game_name)) {
+		if (game_sesh_st != getGameState(gameName)) {
 			refreshNow = true;
 		}
 		resp.setContentType("text/html");

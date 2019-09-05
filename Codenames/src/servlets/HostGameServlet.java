@@ -27,9 +27,10 @@ public class HostGameServlet extends HttpServlet {
 		String player_name = req.getParameter("player_name");
 		HttpSession session = req.getSession();
 		HostDao dao = new HostDao();
-		String game_name = dao.createGame(player_name, session);
-		session.setAttribute("game_name", game_name);
-		RefreshServlet.incrementGameState(game_name);
-		resp.sendRedirect("game_lobby");
+		String gameName= dao.createGame(player_name, session);
+		session.setAttribute("gameName", gameName);
+		session.setAttribute("gameState", 1);
+		RefreshServlet.incrementGameState(gameName);
+		resp.sendRedirect("gamelobby");
 	}
 }

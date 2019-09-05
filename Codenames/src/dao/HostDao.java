@@ -27,13 +27,27 @@ public class HostDao {
 			gameName = createGameName(connection);
 			
 					
-			// Write the select query
-			sql = "insert into codenames_games(game_name,) values(?)";
-
+			// Write the insert command
+			sql = "insert into codenames_games(game_name,round_num) values(?,?)";
+			
 			// Set parameters with PreparedStatement
 			statement = connection.prepareStatement(sql);
 			statement.setString(1, gameName);
+			statement.setInt(2, 0);
 			statement.executeUpdate();
+			session.setAttribute("gameName", gameName);
+			
+			// Create table to hold player names
+			statement = connection.prepareStatement(makeNamesTableString(gameName));
+			statement.executeUpdate();
+			
+			sql = "insert into " + gameName + "_players(player_name,player_color) values(?,?)";
+			statement = connection.prepareStatement(sql);
+			statement.setString(1, host_name);
+			statement.setString(2, "n");
+			statement.executeUpdate();
+			session.setAttribute("playerName", host_name);
+			session.setAttribute("playerColor", "n");
 		
 		} catch (SQLException exception) {
 			exception.printStackTrace();
@@ -71,6 +85,15 @@ public class HostDao {
 		for(int i = 0; i < 4; i++) {
 			out.append((char)(rand.nextInt(26)+65));
 		}
+		return out.toString();
+	}
+	
+	// Build string to be used as SQL statement for making table in MySQL database to represent the game instance
+	private String makeNamesTableString(String name) {
+		StringBuilder out = new StringBuilder();
+		out.append("create table ");
+		out.append(name + "_players");
+		out.append("(player_id integer not null auto_increment, player_name varchar(12), player_color varchar(1), primary key (player_id))");
 		return out.toString();
 	}
 	
