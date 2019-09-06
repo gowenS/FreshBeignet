@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,6 +21,7 @@ public class GameLobbyServlet extends HttpServlet{
 		LobbyDao dao = new LobbyDao();
 		int round = dao.getRound(session);
 		if (round == 0) {
+			dao.getTeams(session);
 			req.getRequestDispatcher("/html/gamelobby.jsp").forward(req, resp);	
 		} else {
 			resp.sendRedirect("play");
@@ -30,6 +32,7 @@ public class GameLobbyServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession session = req.getSession();
 		LobbyDao dao = new LobbyDao();
+		dao.buttonPress(req.getParameter("btnprs"),session);
 	}
 	
 

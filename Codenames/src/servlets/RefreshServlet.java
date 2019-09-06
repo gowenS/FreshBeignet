@@ -22,7 +22,8 @@ public class RefreshServlet extends HttpServlet{
 		String gameName = (String) session.getAttribute("gameName");
 		int game_sesh_st = (int) session.getAttribute("gameState");
 		Boolean refreshNow = false;
-		if (game_sesh_st != getGameState(gameName)) {
+		if (game_sesh_st != game_state.get(gameName)) {
+			System.out.println("session st: " + game_sesh_st + " in memory: " + game_state.get(gameName));
 			refreshNow = true;
 		}
 		resp.setContentType("text/html");

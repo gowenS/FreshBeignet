@@ -48,6 +48,10 @@ public class HostDao {
 			statement.executeUpdate();
 			session.setAttribute("playerName", host_name);
 			session.setAttribute("playerColor", "n");
+			session.setAttribute("redTeam", "");
+			session.setAttribute("blueTeam", "");
+			session.setAttribute("noTeam", "");
+			session.setAttribute("gameState", 0);
 		
 		} catch (SQLException exception) {
 			exception.printStackTrace();

@@ -30,6 +30,9 @@ public class JoinGameServlet extends HttpServlet {
 			case 1: 
 				session.setAttribute("join_error_code", null);
 				session.setAttribute("gameState", RefreshServlet.getGameState(gameNameAttempt));
+				session.setAttribute("redTeam", "");
+				session.setAttribute("blueTeam", "");
+				session.setAttribute("noTeam", "");
 				resp.sendRedirect("gamelobby");
 				break;
 			case 2:
