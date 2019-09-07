@@ -20,6 +20,7 @@ public class GameLobbyServlet extends HttpServlet{
 		HttpSession session = req.getSession();
 		LobbyDao dao = new LobbyDao();
 		int round = dao.getRound(session);
+		session.setAttribute("gameState", RefreshServlet.getGameState((String) session.getAttribute("gameName")));
 		if (round == 0) {
 			dao.getTeams(session);
 			req.getRequestDispatcher("/html/gamelobby.jsp").forward(req, resp);	
