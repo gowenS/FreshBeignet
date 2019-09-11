@@ -8,6 +8,8 @@ private String showTeam(String team) {
 	out.append(team.replace(",","\n"));
 	return out.toString();	
 }
+
+//TODO only show play game button once enough players are distributed across teams
 %>
 
 <html>
@@ -29,6 +31,10 @@ private String showTeam(String team) {
 	<div class="buttonholder">
 		<button onclick="sendBtnClick('r')" class=buttonRed>Join Red</button>	
 		<button onclick="sendBtnClick('b')" class=buttonBlue>Join Blue</button>
+	</div>
+	
+	<div class="buttonholder">
+		<button onclick="sendBtnClick('p')" class=buttonBlue>Start Game</button>
 	</div>
 	
 	<script>

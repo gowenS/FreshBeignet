@@ -73,13 +73,19 @@ public class LobbyDao {
 		String gameName = (String) session.getAttribute("gameName");
 		try {
 			Connection connection = DBconnection.getConnectionToDatabase();
-			sql = "update " + gameName + "_players set player_color = ? where player_name like ?";
-			statement = connection.prepareStatement(sql);
-			statement.setString(1, button);
-			statement.setString(2, (String)session.getAttribute("playerName"));
-			statement.executeUpdate();
-			session.setAttribute("player_color", button);
-			
+			if (button.contentEquals("p")) {
+				sql = "update codenames_games set round_num = 1 where game_name like ?";
+				statement = connection.prepareStatement(sql);
+				statement.setString(1, gameName);
+				statement.executeUpdate();
+			} else {
+				sql = "update " + gameName + "_players set player_color = ? where player_name like ?";
+				statement = connection.prepareStatement(sql);
+				statement.setString(1, button);
+				statement.setString(2, (String)session.getAttribute("playerName"));
+				statement.executeUpdate();
+				session.setAttribute("player_color", button);
+			}			
 		} catch(SQLException exception) {
 			exception.printStackTrace();
 		}

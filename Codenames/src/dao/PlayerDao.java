@@ -16,9 +16,23 @@ public class PlayerDao {
 	String sql;
 	ResultSet set;
 	
+	public void getGameState(HttpSession session) {
+		String gameName = (String) session.getAttribute("gameName");
+		try {
+			Connection connection = DBconnection.getConnectionToDatabase();
+			sql = "select * from codenames_games where game_name = ?";
+			statement = connection.prepareStatement(sql);
+			
+			session.setAttribute("gameState", RefreshServlet.getGameState(gameName));
+		} catch(SQLException exception) {
+			exception.printStackTrace();
+		}
+		
+		
+	}
 	
 	private void incrementGS(Connection connection,HttpSession session) {
-		String game_name = (String) session.getAttribute("game_name");	
-		RefreshServlet.incrementGameState(game_name);
+		String gameName = (String) session.getAttribute("game_name");	
+		RefreshServlet.incrementGameState(gameName);
 	}		
 }
