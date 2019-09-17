@@ -24,7 +24,9 @@ public class PlayGameServlet extends HttpServlet{
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
+		HttpSession session = req.getSession();
+		PlayerDao dao = new PlayerDao();
+		dao.buttonPress(session, (String)req.getParameter("btnprs"));
 	}
 	
 }
