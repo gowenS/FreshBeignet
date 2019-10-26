@@ -5,6 +5,7 @@
 String me;
 String myColor;
 String opponentColor;
+String phase;
 private String getBtnCls(String clr) {
 	return "";
 }
@@ -26,7 +27,8 @@ private String getBtnCls(String clr) {
 		myColor = "Blue";
 		opponentColor = "Red";
 	}	
-	if (((String)session.getAttribute("gamePhase")).equals("e")) { //choose spies%>
+	phase = (String)session.getAttribute("game_phase");
+	if (phase.equals("v")) { //choose spies%>
 		<h3>Room Code: <%=(String) session.getAttribute("gameName") %></h3>
 		<h3>Choose the spies</h3>
 		<div class="lobbyTextAreaHolder">

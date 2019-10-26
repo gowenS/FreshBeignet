@@ -33,7 +33,7 @@ public class PlayerDao {
 	
 	private void startPlaying(HttpSession session) {
 		GameBoard gb = new GameBoard();
-		session.setAttribute("board_values", gb.getGameBoard());
+		session.setAttribute("board_colors", gb.getGameBoard());
 		session.setAttribute("turn", gb.getBoardColor().charAt(0));
 		//set words
 		session.setAttribute("revealed", "0000000000000000000000000");
@@ -45,18 +45,19 @@ public class PlayerDao {
 			Connection connection = DBconnection.getConnectionToDatabase();
 			sql = "select * from codenames_games where game_name = ?";
 			statement = connection.prepareStatement(sql);
+			statement.setString(1, gameName);
 			set = statement.executeQuery();
 			set.next();
 			session.setAttribute("turn", set.getString("turn"));
 			session.setAttribute("words", set.getString("words"));
-			session.setAttribute("board_values", set.getString("board_values"));
+			session.setAttribute("board_colors", set.getString("board_colors"));
 			session.setAttribute("revealed", set.getString("revealed"));
 			session.setAttribute("spy_red", set.getInt("spy_red"));
 			session.setAttribute("spy_blue", set.getInt("spy_blue"));
 			session.setAttribute("clue", set.getString("clue"));
 			session.setAttribute("clue_number", set.getInt("clue_number"));
 			session.setAttribute("round_num", set.getInt("round_num"));
-			session.setAttribute("gamePhase", set.getString("game_phase"));
+			session.setAttribute("game_phase", set.getString("game_phase"));
 			session.setAttribute("gameState", RefreshServlet.getGameState(gameName));
 		} catch(SQLException exception) {
 			exception.printStackTrace();
@@ -67,11 +68,11 @@ public class PlayerDao {
 		String gameName = (String) session.getAttribute("gameName");
 		try {
 			Connection connection = DBconnection.getConnectionToDatabase();
-			sql = "update codenames_games set turn = ?, words = ?, board_values = ?, revealed = ?, spy_red = ?, spy_ blue = ?, clue = ?, clue_number = ?, round_num = ?, game_phase = ? where game_name like ?";
+			sql = "update codenames_games set turn = ?, words = ?, board_colors = ?, revealed = ?, spy_red = ?, spy_ blue = ?, clue = ?, clue_number = ?, round_num = ?, game_phase = ? where game_name like ?";
 			statement = connection.prepareStatement(sql);
 			statement.setString(1, (String)session.getAttribute("turn"));
 			statement.setString(2, (String)session.getAttribute("words"));
-			statement.setString(3, (String)session.getAttribute("board_values"));
+			statement.setString(3, (String)session.getAttribute("board_colors"));
 			statement.setString(4, (String)session.getAttribute("revealed"));
 			statement.setInt(5, (int)session.getAttribute("spy_red"));
 			statement.setInt(6, (int)session.getAttribute("spy_blue"));

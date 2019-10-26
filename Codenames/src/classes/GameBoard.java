@@ -15,6 +15,7 @@ public class GameBoard {
 	
 	private String makeGameBoard() {
 		ArrayList<String> out = new ArrayList<>();
+		StringBuilder realOut = new StringBuilder();
 		random = new Random();
 		int whose_turn = random.nextInt(100);
 		if (whose_turn > 49) {
@@ -32,9 +33,9 @@ public class GameBoard {
 			out.add("n");
 		}
 		out.add("a");
-		
 		Collections.shuffle(out);
-		return out.toString();
+		out.forEach((a)->realOut.append(a));
+		return realOut.toString();
 	}	
 	
 	public String getGameBoard() {
@@ -45,4 +46,9 @@ public class GameBoard {
 		return card_color;
 	}
 	
+//	public static void main(String[] args) {
+//		GameBoard board = new GameBoard();
+//		System.out.println(board.getBoardColor());
+//		System.out.println(board.getGameBoard());
+//	}
 }

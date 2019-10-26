@@ -1,13 +1,15 @@
 package classes;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class WordList {
+	String legalWords = "";
 	
-	public String[] WordList() {
+	public WordList() {
 		String file = "/usr/word_lists/codenames_words.txt";
 		StringBuilder out = new StringBuilder();
 		String line = "";
@@ -23,21 +25,33 @@ public class WordList {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return getWordList(out.toString());
+		legalWords = out.toString();
 	}
 	
-	public String[] getWordList(String in) {
-		List<String> words = Arrays.asList(in.split(","));
+	public WordList(String in) {
+		legalWords = in;
+	}		
+	
+	public String[] getWordList() {
+		ArrayList<String> words = new ArrayList<String>(Arrays.asList(legalWords.split(",")));
 		Collections.shuffle(words);
 		StringBuilder outUse = new StringBuilder();
 		StringBuilder outRemaining = new StringBuilder();
 		for (int i = 0; i < 25; i++) {
+			if(i>0) outUse.append(",");
 			outUse.append(words.remove(0));
 		} 
 		for (int j = 0 ; j < words.size(); j++ ) {
+			if(j>0) outRemaining.append(",");
 			outRemaining.append(words.get(j));
 		}		
 		return new String[]{outUse.toString(),outRemaining.toString()};
 	}
 	
+//	public static void main(String[] args) {
+//		WordList list = new WordList();
+//		String[] build = list.getWordList();
+//		System.out.println(build[0]);
+//		System.out.print(build[1]);
+//	}	
 }
