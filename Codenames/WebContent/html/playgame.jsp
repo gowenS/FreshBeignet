@@ -32,8 +32,8 @@ private String getBtnCls(String clr) {
 		<h3>Room Code: <%=(String) session.getAttribute("gameName") %></h3>
 		<h3>Choose the spies</h3>
 		<div class="lobbyTextAreaHolder">
-			<textarea class="lobbyTextAreaSRed" readonly><%= (String)session.getAttribute("spy_red") %></textarea>
-			<textarea class="lobbyTextAreaBlue" readonly><%=(String)session.getAttribute("spy_blue") %></textarea>
+			<textarea class="lobbyTextAreaSRed" readonly><%= (String)session.getAttribute("spy_red_name") %></textarea>
+			<textarea class="lobbyTextAreaBlue" readonly><%= (String)session.getAttribute("spy_blue_name") %></textarea>
 		</div>
 		<div class="buttonholder">
 			<button onclick="sendBtnClick('v')" class=button<%=getBtnCls(myColor) %>>Become Spy</button>

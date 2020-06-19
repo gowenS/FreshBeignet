@@ -25,15 +25,21 @@ public class HostDao {
 			
 			// Create name for game
 			gameName = createGameName(connection);
-			
-					
+								
 			// Write the insert command
-			sql = "insert into codenames_games(game_name,round_num) values(?,?)";
+			sql = "insert into codenames_games(game_name,round_num,spy_red,spy_blue,turn,words,revealed,clue,clue_number) values(?,?,?,?,?,?,?,?,?)";
 			
 			// Set parameters with PreparedStatement
 			statement = connection.prepareStatement(sql);
 			statement.setString(1, gameName);
 			statement.setInt(2, 0);
+			statement.setInt(3, 0);
+			statement.setInt(4, 0);
+			statement.setString(5, "");
+			statement.setString(6, "");
+			statement.setString(7, "");
+			statement.setString(8, "");
+			statement.setInt(9, 0);
 			statement.executeUpdate();
 			session.setAttribute("gameName", gameName);
 			
@@ -52,6 +58,13 @@ public class HostDao {
 			session.setAttribute("blueTeam", "");
 			session.setAttribute("noTeam", "");
 			session.setAttribute("gameState", 0);
+			
+			sql = "select * from " + gameName +"_players where player_name = ?";
+			statement = connection.prepareStatement(sql);
+			statement.setString(1, host_name);
+			set = statement.executeQuery();
+			set.next();
+			session.setAttribute("my_ID", set.getInt("player_id"));
 		
 		} catch (SQLException exception) {
 			exception.printStackTrace();

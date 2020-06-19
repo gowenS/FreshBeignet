@@ -39,6 +39,14 @@ public class JoinDao {
 				session.setAttribute("gameName", gameNameAttempt);
 				session.setAttribute("playerColor", "n");
 				session.setAttribute("playerName", playerNameAttempt);
+				
+				sql = "select * from " + gameNameAttempt + "_players where player_name = ?";
+				statement = connection.prepareStatement(sql);
+				statement.setString(1, playerNameAttempt);
+				set = statement.executeQuery();
+				set.next();
+				session.setAttribute("my_ID", set.getInt("player_id"));
+				
 				RefreshServlet.incrementGameState(gameNameAttempt);
 			} else {
 				return 2; // game doesn't exist error
