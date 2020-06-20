@@ -62,7 +62,10 @@ public class WipeDB extends HttpServlet{
             }
             sql = "delete from codenames_games where game_id > 0";
             statement = connection.prepareStatement(sql);
-            statement.executeUpdate();            
+            statement.executeUpdate(); 
+            sql = "delete from codenames_wordbank where length(game_name) > 0";
+            statement = connection.prepareStatement(sql);
+            statement.executeUpdate(); 
             
             // Onitama
             sql = "delete from onitama_games where game_id > 0";

@@ -232,7 +232,7 @@ textarea{
 	border: 1px solid black;
 	text-align: center;
 	font-size: 18px;
-	flex: 1;
+	flex: 1;	
 }
 
 .lobbyTextAreaHolder{
@@ -241,7 +241,7 @@ textarea{
 	display: flex;
 }
 
-.gridCell {
+.gridCelln {
 	width: 55px;
 	height: 55px;
 	border: 1px solid black;
@@ -251,10 +251,10 @@ textarea{
 	flex: 1;
 	padding: 0;
 	margin: 2px;
+	background-color: #d3d7cf;
 }
 
-.gridCell-flipped {
-	transform: rotateX(180deg) rotateY(180deg); 
+.gridCellr {
 	width: 55px;
 	height: 55px;
 	border: 1px solid black;
@@ -264,6 +264,33 @@ textarea{
 	flex: 1;
 	padding: 0;
 	margin: 2px;
+	background-color: #e37676;
+}
+
+.gridCellb {
+	width: 55px;
+	height: 55px;
+	border: 1px solid black;
+	text-align: center;
+	font-size: 20px;
+	font-family: 'Amatic SC', cursive;
+	flex: 1;
+	padding: 0;
+	margin: 2px;
+	background-color: #646ae3;
+}
+
+.gridCella {
+	width: 55px;
+	height: 55px;
+	border: 1px solid black;
+	text-align: center;
+	font-size: 20px;
+	font-family: 'Amatic SC', cursive;
+	flex: 1;
+	padding: 0;
+	margin: 2px;
+	background-color: #ad7fa8;
 }
 
 .gridCellHolder{

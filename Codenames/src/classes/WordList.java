@@ -32,7 +32,11 @@ public class WordList {
 		legalWords = in;
 	}		
 	
-	public String[] getWordList() {
+	public String getInitialWordList() {
+		return legalWords;
+	}
+	
+	public String[] getNewGameWordList() {
 		ArrayList<String> words = new ArrayList<String>(Arrays.asList(legalWords.split(",")));
 		Collections.shuffle(words);
 		StringBuilder outUse = new StringBuilder();
@@ -48,10 +52,18 @@ public class WordList {
 		return new String[]{outUse.toString(),outRemaining.toString()};
 	}
 	
+	public ArrayList<String> getCurrentGameArray() {
+		ArrayList<String> words = new ArrayList<String>(Arrays.asList(legalWords.split(",")));
+		return words;
+	}	
+	
 //	public static void main(String[] args) {
 //		WordList list = new WordList();
 //		String[] build = list.getWordList();
 //		System.out.println(build[0]);
 //		System.out.print(build[1]);
+//		String fullList = list.getInitialWordList();
+//		System.out.println(fullList);
+//		System.out.println(fullList.length());
 //	}	
 }

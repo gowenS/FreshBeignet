@@ -9,7 +9,7 @@ private String showTeam(String team) {
 	return out.toString();	
 }
 
-//TODO only show play game button once enough players are distributed across teams
+//TODO only show play game button once enough players are distributed across teams (psh when do you have time for that)
 %>
 
 <html>

@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <%@ page import = "classes.MoveCard" %>
 <%!
+// Onitama
 Boolean my_turn;
 String me;
 String opponent;

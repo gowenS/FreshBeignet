@@ -10,6 +10,8 @@ import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import classes.WordList;
+
 
 public class HostDao {	
 	PreparedStatement statement;
@@ -65,6 +67,14 @@ public class HostDao {
 			set = statement.executeQuery();
 			set.next();
 			session.setAttribute("my_ID", set.getInt("player_id"));
+			
+			// Create table to store word bank for this game
+			WordList initialWordBank = new WordList(); 
+			sql = "insert into codenames_wordbank(game_name, words_remaining) values (?,?)";
+			statement = connection.prepareStatement(sql);
+			statement.setString(1, gameName);
+			statement.setString(2, initialWordBank.getInitialWordList());
+			statement.executeUpdate();			
 		
 		} catch (SQLException exception) {
 			exception.printStackTrace();

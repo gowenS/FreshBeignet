@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import classes.GameBoard;
+import classes.WordList;
 import servlets.RefreshServlet;
 
 public class PlayerDao {
@@ -24,7 +25,7 @@ public class PlayerDao {
 			String myColor = myFullColor((String)session.getAttribute("player_color"));
 			session.setAttribute("spy_"+ myColor, (int)session.getAttribute("my_ID"));
 			String oppColor = myOppColor(myColor);
-			if( ! (((int) session.getAttribute("spy_" + oppColor)) == 0) ) {
+			if( !(((int) session.getAttribute("spy_" + oppColor)) == 0) ) {
 				startPlaying(session);
 			}
 		}
@@ -32,12 +33,32 @@ public class PlayerDao {
 	}
 	
 	private void startPlaying(HttpSession session) {
+		String gameName = (String)session.getAttribute("gameName");
 		GameBoard gb = new GameBoard();
 		session.setAttribute("board_colors", gb.getGameBoard());
 		session.setAttribute("turn", gb.getBoardColor().charAt(0));
 		//set words
 		session.setAttribute("revealed", "0000000000000000000000000");
 		session.setAttribute("game_phase", "p");
+		try {
+			Connection connection = DBconnection.getConnectionToDatabase();
+			sql = "select * from codenames_wordbank where game_name like ?";
+			statement = connection.prepareStatement(sql);
+			statement.setString(1, gameName);
+			set = statement.executeQuery();
+			set.next();
+			WordList wl = new WordList(set.getString("words_remaining"));
+			String[] wordResults = wl.getNewGameWordList();
+			session.setAttribute("words", wordResults[0]);
+			sql = "update codenames_wordbank set words_remaining = ? where game_name like ?";
+			statement = connection.prepareStatement(sql);
+			statement.setString(1, wordResults[1]);
+			statement.setString(2, gameName);
+			statement.executeUpdate();
+			
+		}catch(SQLException exception) {
+			exception.printStackTrace();
+		}	
 	}
 	
 	public void getGameState(HttpSession session) {
@@ -93,9 +114,16 @@ public class PlayerDao {
 		}	
 	}
 	
+	public void enterClue(HttpSession session, String clue, String clue_number_str) {
+		int clue_number = Integer.parseInt(clue_number_str);
+		session.setAttribute("clue", clue);
+		session.setAttribute("clue_number", clue_number);
+		setGameState(session);
+	}
+	
 	private String myFullColor(String color) {
 		String out = "blue";
-		if (color.equals("r")) {
+		if (color.charAt(0) == 'r') {
 			out = "red";
 		}
 		return out;
@@ -103,7 +131,7 @@ public class PlayerDao {
 	
 	private String myOppColor(String color) {
 		String out = "red";
-		if (color.equals("r")) {
+		if (color.charAt(0) == 'r') {
 			out = "blue";
 		}
 		return out;

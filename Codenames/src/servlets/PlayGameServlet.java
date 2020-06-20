@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,7 +27,13 @@ public class PlayGameServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession session = req.getSession();
 		PlayerDao dao = new PlayerDao();
-		dao.buttonPress(session, (String)req.getParameter("btnprs"));
+		Map<String,String[]> reqMap = req.getParameterMap();
+		if (reqMap.containsKey("btnprs")) {
+			dao.buttonPress(session, reqMap.get("btnprs")[0]);
+		} else {
+			dao.enterClue(session, reqMap.get("clue")[0], reqMap.get("clue_number")[0]);
+		}
+		
 	}
 	
 }
