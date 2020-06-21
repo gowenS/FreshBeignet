@@ -26,17 +26,21 @@ private String getGameBoard(Boolean iAmSpy, Boolean myTurn, HttpSession session,
 	StringBuilder out = new StringBuilder("<br/> \n");
 	String revealed = (String) session.getAttribute("revealed");
 	String board_colors = (String) session.getAttribute("board_colors");
+	String selected = (String) session.getAttribute("selected");
+	String clue = ((String) session.getAttribute("clue")).strip();
 	String pic = "n";
+	String sel = "";
 	for (int i = 0; i<25; i++){
+		sel = selected.charAt(i) == '1' ? "s" : "";
 		if(iAmSpy || (revealed.charAt(i) == '1')){
 			pic = board_colors.charAt(i)+"";
 		} else {
-			pic = "n";
+			pic = "n" + sel;
 		}
 		if ( i % 5 == 0){
 			out.append("<br/>");
 		} 
-		if (myTurn && !iAmSpy) {
+		if (myTurn && !iAmSpy && pic.contains("n") && clue != "") {
 			out.append("<button onclick=\"sendBtnClick('" + Integer.toString(i) + "')\" class=gridCell"+pic+">" + wordsArray.get(i) + "</button> \n");
 		} else { 
 			out.append("<button class=gridCell"+pic+">" + wordsArray.get(i) + "</button> \n");
@@ -85,7 +89,7 @@ private String getGameBoard(Boolean iAmSpy, Boolean myTurn, HttpSession session,
 			<textarea class="lobbyTextAreaBlue" readonly><%= (String)session.getAttribute("spy_blue_name") %></textarea>
 		</div>
 		<div class="buttonholder">
-			<button onclick="sendBtnClick('v')" class=button<%=getBtnCls(myColor) %>>Become Spy</button>
+			<button onclick="sendBtnClick('v')" class=button1>Become Spy</button>
 		</div>
 	<%} else { //regular game  
 	
@@ -109,6 +113,9 @@ private String getGameBoard(Boolean iAmSpy, Boolean myTurn, HttpSession session,
 		<%} %>
 		<% if (((String)session.getAttribute("clue")).strip() != ""){ %>
 			<h3>Hint: <%=(String)session.getAttribute("clue") %>, <%=(int)session.getAttribute("clue_number") %></h3>
+			<% if (!iAmSpy && myTurn) {  %>
+				<button onclick="sendBtnClick('submit_selected')" class=button1>Submit Selections.</button>
+			<%} %>
 		<%} %>
 	<%}%>
 	

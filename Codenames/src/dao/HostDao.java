@@ -29,7 +29,7 @@ public class HostDao {
 			gameName = createGameName(connection);
 								
 			// Write the insert command
-			sql = "insert into codenames_games(game_name,round_num,spy_red,spy_blue,turn,words,revealed,clue,clue_number) values(?,?,?,?,?,?,?,?,?)";
+			sql = "insert into codenames_games(game_name,round_num,spy_red,spy_blue,turn,words,revealed,clue,clue_number,selected) values(?,?,?,?,?,?,?,?,?,?)";
 			
 			// Set parameters with PreparedStatement
 			statement = connection.prepareStatement(sql);
@@ -42,6 +42,7 @@ public class HostDao {
 			statement.setString(7, "");
 			statement.setString(8, "");
 			statement.setInt(9, 0);
+			statement.setString(10, "");
 			statement.executeUpdate();
 			session.setAttribute("gameName", gameName);
 			

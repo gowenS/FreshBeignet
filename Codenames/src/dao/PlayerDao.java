@@ -28,6 +28,11 @@ public class PlayerDao {
 			if( !(((int) session.getAttribute("spy_" + oppColor)) == 0) ) {
 				startPlaying(session);
 			}
+			
+		} else if (btn.contentEquals("submit_selected")) {
+			// check the selection, do a lot of stuff.
+		} else { // Catch all should be numeric identifier for button pressed.
+			buttonWasSelected(session,btn);
 		}
 		setGameState(session);
 	}
@@ -39,6 +44,7 @@ public class PlayerDao {
 		session.setAttribute("turn", gb.getBoardColor().charAt(0));
 		//set words
 		session.setAttribute("revealed", "0000000000000000000000000");
+		session.setAttribute("selected", "0000000000000000000000000");
 		session.setAttribute("game_phase", "p");
 		try {
 			Connection connection = DBconnection.getConnectionToDatabase();
@@ -76,6 +82,7 @@ public class PlayerDao {
 			session.setAttribute("words", set.getString("words"));
 			session.setAttribute("board_colors", set.getString("board_colors"));
 			session.setAttribute("revealed", set.getString("revealed"));
+			session.setAttribute("selected", set.getString("selected"));
 			session.setAttribute("spy_red", set.getInt("spy_red"));
 			session.setAttribute("spy_blue", set.getInt("spy_blue"));
 			session.setAttribute("clue", set.getString("clue"));
@@ -94,7 +101,7 @@ public class PlayerDao {
 		String gameName = (String) session.getAttribute("gameName");
 		try {
 			Connection connection = DBconnection.getConnectionToDatabase();
-			sql = "update codenames_games set turn = ?, words = ?, board_colors = ?, revealed = ?, spy_red = ?, spy_blue = ?, clue = ?, clue_number = ?, round_num = ?, game_phase = ? where game_name like ?";
+			sql = "update codenames_games set turn = ?, words = ?, board_colors = ?, revealed = ?, spy_red = ?, spy_blue = ?, clue = ?, clue_number = ?, round_num = ?, game_phase = ?, selected = ? where game_name like ?";
 			statement = connection.prepareStatement(sql);
 			statement.setString(1, session.getAttribute("turn").toString());
 			statement.setString(2, (String)session.getAttribute("words"));
@@ -106,7 +113,8 @@ public class PlayerDao {
 			statement.setInt(8, (int)session.getAttribute("clue_number"));
 			statement.setInt(9, (int)session.getAttribute("round_num"));
 			statement.setString(10, (String)session.getAttribute("game_phase"));
-			statement.setString(11, gameName);
+			statement.setString(11, (String)session.getAttribute("selected"));
+			statement.setString(12, gameName);
 			statement.executeUpdate();
 			incrementGS(session);
 		}catch(SQLException exception) {
@@ -119,6 +127,13 @@ public class PlayerDao {
 		session.setAttribute("clue", clue);
 		session.setAttribute("clue_number", clue_number);
 		setGameState(session);
+	}
+	
+	private void buttonWasSelected(HttpSession session, String btn) {
+		StringBuilder newSelected = new StringBuilder((String)session.getAttribute("selected"));
+		char replace = newSelected.charAt(Integer.parseInt(btn)) == '0' ? '1' : '0';
+		newSelected.setCharAt(Integer.parseInt(btn), replace);
+		session.setAttribute("selected", newSelected.toString());
 	}
 	
 	private String myFullColor(String color) {

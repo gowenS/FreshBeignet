@@ -33,7 +33,7 @@ public class PlayGameServlet extends HttpServlet{
 		} else {
 			dao.enterClue(session, reqMap.get("clue")[0], reqMap.get("clue_number")[0]);
 		}
-		
+		req.getRequestDispatcher("/html/playgame.jsp").forward(req, resp);
 	}
 	
 }
