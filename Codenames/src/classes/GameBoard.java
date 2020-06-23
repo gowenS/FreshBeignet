@@ -19,10 +19,10 @@ public class GameBoard {
 		random = new Random();
 		int whose_turn = random.nextInt(100);
 		if (whose_turn > 49) {
-			card_color = "red";
+			card_color = "r";
 			out.add("r");
 		} else {
-			card_color = "blue";
+			card_color = "b";
 			out.add("b");
 		}
 		for(int i = 0;i<8;i++) {

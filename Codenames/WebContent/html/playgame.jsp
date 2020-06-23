@@ -10,6 +10,7 @@ String opponentColor;
 String phase;
 ArrayList<String> wordsArray;
 Boolean iAmSpy;
+Boolean myTurn;
 private String getBtnCls(String clr) {
 	return "";
 }
@@ -77,7 +78,7 @@ private String getGameBoard(Boolean iAmSpy, Boolean myTurn, HttpSession session,
 	} else {
 		iAmSpy = false;
 	}
-	Boolean myTurn = ((String) session.getAttribute("turn")).equals((String)session.getAttribute("player_color"));
+	myTurn = ((String) session.getAttribute("turn")).equals(me);
 	
 	if (phase.equals("v")) { 
 		
@@ -99,34 +100,39 @@ private String getGameBoard(Boolean iAmSpy, Boolean myTurn, HttpSession session,
 		<h3><%= fullColorName((String) session.getAttribute("turn")) %> Turn</h3>
 		<%= getGameBoard(iAmSpy, myTurn, session, wordsArray) %>
 		<% if (iAmSpy && myTurn && ((String)session.getAttribute("clue")).strip() == ""){%>
-			<form action="play" method="post">			
+			<form id="clue_form" action="play" method="post">			
 				<h3>Enter your hint</h3>		
-				<input type="text" name="clue" maxlength="50" class=joinTextField>
+				<input type="text" name="clue_in" maxlength="50" class=joinTextField>
 				<h3>Enter you hint number</h3>
 				<select name="clue_number" size="1" class=dropdown>
 					<%for(int i = 0; i <= 7; i++) { %>
 						<option value="<%=i%>"><%=i%></option>				
 					<%} %>
-				</select>
-				<button type="submit" class=button1>Submit your hint.</button>	
+				</select>				
 			</form>
+			<button onclick="sendBtnClick('submit_clue')" class=button1>Submit your hint.</button>	
 		<%} %>
 		<% if (((String)session.getAttribute("clue")).strip() != ""){ %>
 			<h3>Hint: <%=(String)session.getAttribute("clue") %>, <%=(int)session.getAttribute("clue_number") %></h3>
 			<% if (!iAmSpy && myTurn) {  %>
-				<button onclick="sendBtnClick('submit_selected')" class=button1>Submit Selections.</button>
+				<button onclick="sendBtnClick('submit_selected')" class=button1>Submit Selection.</button>
+				<button onclick="sendBtnClick('end_turn')" class=button1>End Turn.</button>
 			<%} %>
 		<%} %>
 	<%}%>
 	
 	<script>
 		function sendBtnClick(btn){
-			var xhr = new XMLHttpRequest();
-			xhr.open('POST','play',true);
-			xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-			console.log(btn);
-			xhr.send("btnprs=" + btn);
-			window.setTimeout(function(){ location.reload(); },250);
+			if (btn === "submit_clue") {
+				document.getElementById("clue_form").submit();
+			} else {
+				var xhr = new XMLHttpRequest();
+				xhr.open('POST','play',true);
+				xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+				console.log(btn);
+				xhr.send("btnprs=" + btn);	
+				window.setTimeout(function(){ location.reload(); },250);
+			}					
 		}
 	</script>
 	<script>

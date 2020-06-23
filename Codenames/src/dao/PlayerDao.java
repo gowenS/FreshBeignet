@@ -21,18 +21,24 @@ public class PlayerDao {
 	
 	public void buttonPress(HttpSession session, String btn) {
 		getGameState(session);
-		if (btn.contentEquals("v")) {
-			String myColor = myFullColor((String)session.getAttribute("player_color"));
-			session.setAttribute("spy_"+ myColor, (int)session.getAttribute("my_ID"));
-			String oppColor = myOppColor(myColor);
-			if( !(((int) session.getAttribute("spy_" + oppColor)) == 0) ) {
-				startPlaying(session);
-			}
-			
-		} else if (btn.contentEquals("submit_selected")) {
-			// check the selection, do a lot of stuff.
-		} else { // Catch all should be numeric identifier for button pressed.
-			buttonWasSelected(session,btn);
+		System.out.println("Button pressed was " + btn);
+		switch(btn) {
+			case "v":
+				String myColor = myFullColor((String)session.getAttribute("player_color"));
+				session.setAttribute("spy_"+ myColor, (int)session.getAttribute("my_ID"));
+				String oppColor = myOppColor(myColor);
+				if( !(((int) session.getAttribute("spy_" + oppColor)) == 0) ) {
+					startPlaying(session);
+				}
+				break;
+			case "submit_selected":
+				// check the selection, do a lot of stuff.
+				break;
+			case "end_turn":
+				endTurn(session);
+				break;
+			default: // Catch all should be numeric identifier for button pressed.
+				buttonWasSelected(session,btn);
 		}
 		setGameState(session);
 	}
@@ -41,7 +47,7 @@ public class PlayerDao {
 		String gameName = (String)session.getAttribute("gameName");
 		GameBoard gb = new GameBoard();
 		session.setAttribute("board_colors", gb.getGameBoard());
-		session.setAttribute("turn", gb.getBoardColor().charAt(0));
+		session.setAttribute("turn", gb.getBoardColor());
 		//set words
 		session.setAttribute("revealed", "0000000000000000000000000");
 		session.setAttribute("selected", "0000000000000000000000000");
@@ -91,7 +97,8 @@ public class PlayerDao {
 			session.setAttribute("game_phase", set.getString("game_phase"));
 			session.setAttribute("spy_red_name", set.getString("spy_red_name"));
 			session.setAttribute("spy_blue_name", set.getString("spy_blue_name"));	
-			session.setAttribute("gameState", RefreshServlet.getGameState(gameName));		
+			session.setAttribute("gameState", RefreshServlet.getGameState(gameName));	
+//			System.out.println("gameState " + RefreshServlet.getGameState(gameName));
 		} catch(SQLException exception) {
 			exception.printStackTrace();
 		}		
@@ -103,7 +110,7 @@ public class PlayerDao {
 			Connection connection = DBconnection.getConnectionToDatabase();
 			sql = "update codenames_games set turn = ?, words = ?, board_colors = ?, revealed = ?, spy_red = ?, spy_blue = ?, clue = ?, clue_number = ?, round_num = ?, game_phase = ?, selected = ? where game_name like ?";
 			statement = connection.prepareStatement(sql);
-			statement.setString(1, session.getAttribute("turn").toString());
+			statement.setString(1, (String)session.getAttribute("turn"));
 			statement.setString(2, (String)session.getAttribute("words"));
 			statement.setString(3, (String)session.getAttribute("board_colors"));
 			statement.setString(4, (String)session.getAttribute("revealed"));
@@ -123,6 +130,7 @@ public class PlayerDao {
 	}
 	
 	public void enterClue(HttpSession session, String clue, String clue_number_str) {
+		System.out.println("Entering clue?");
 		int clue_number = Integer.parseInt(clue_number_str);
 		session.setAttribute("clue", clue);
 		session.setAttribute("clue_number", clue_number);
@@ -130,10 +138,17 @@ public class PlayerDao {
 	}
 	
 	private void buttonWasSelected(HttpSession session, String btn) {
-		StringBuilder newSelected = new StringBuilder((String)session.getAttribute("selected"));
-		char replace = newSelected.charAt(Integer.parseInt(btn)) == '0' ? '1' : '0';
-		newSelected.setCharAt(Integer.parseInt(btn), replace);
+		StringBuilder newSelected = new StringBuilder("0000000000000000000000000");
+		newSelected.setCharAt(Integer.parseInt(btn), '1');
 		session.setAttribute("selected", newSelected.toString());
+	}
+	
+	private void endTurn(HttpSession session) {
+		session.setAttribute("selected", "0000000000000000000000000");
+		session.setAttribute("clue", "");
+		session.setAttribute("clue_number", 0);
+		session.setAttribute("turn", ((String)session.getAttribute("turn")).equals("r") ? "b" : "r");
+		System.out.println("turn is now " + ((String)session.getAttribute("turn")));
 	}
 	
 	private String myFullColor(String color) {

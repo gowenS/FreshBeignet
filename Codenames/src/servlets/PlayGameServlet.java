@@ -30,10 +30,11 @@ public class PlayGameServlet extends HttpServlet{
 		Map<String,String[]> reqMap = req.getParameterMap();
 		if (reqMap.containsKey("btnprs")) {
 			dao.buttonPress(session, reqMap.get("btnprs")[0]);
-		} else {
-			dao.enterClue(session, reqMap.get("clue")[0], reqMap.get("clue_number")[0]);
+		} 
+		else if (reqMap.containsKey("clue_in")){
+			dao.enterClue(session, reqMap.get("clue_in")[0], reqMap.get("clue_number")[0]);
+			resp.sendRedirect("play");
 		}
-		req.getRequestDispatcher("/html/playgame.jsp").forward(req, resp);
 	}
 	
 }
