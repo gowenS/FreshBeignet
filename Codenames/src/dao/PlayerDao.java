@@ -32,7 +32,7 @@ public class PlayerDao {
 				}
 				break;
 			case "submit_selected":
-				// check the selection, do a lot of stuff.
+				checkCorrectGuess(session);
 				break;
 			case "end_turn":
 				endTurn(session);
@@ -141,6 +141,39 @@ public class PlayerDao {
 		StringBuilder newSelected = new StringBuilder("0000000000000000000000000");
 		newSelected.setCharAt(Integer.parseInt(btn), '1');
 		session.setAttribute("selected", newSelected.toString());
+	}
+	
+	private void checkCorrectGuess(HttpSession session) {
+		Boolean win = false;
+		String player_color = (String) session.getAttribute("player_color");
+		String board_colors = (String) session.getAttribute("board_colors");
+		String selected = (String) session.getAttribute("selected");
+		int num = selected.indexOf("1");
+		StringBuilder revealed = new StringBuilder((String)session.getAttribute("revealed"));
+		revealed.setCharAt(num, '1');
+		if (board_colors.charAt(num) == 'a') {
+			//Game over
+		} else if (board_colors.charAt(num) == 'n') {
+			// de-increment remaining guesses
+			
+		} else if (board_colors.charAt(num) == player_color.charAt(0)) {
+			// check if win has been achieved
+			win = checkForWin(player_color,board_colors,revealed.toString());
+			// de-increment remaining guesses
+		} else {
+			// Guess other team's spy
+			endTurn(session);
+		}		
+		session.setAttribute("revealed", revealed.toString());
+		if (win) System.out.println("win");
+	}
+	
+	private Boolean checkForWin(String player_color, String board_colors, String revealed) {
+		Boolean out = true;
+		for(int i = 0; i < board_colors.length(); i++) {
+			if (board_colors.charAt(i) == player_color.charAt(0) && revealed.charAt(i) != '1') out = false;
+		}
+		return out;
 	}
 	
 	private void endTurn(HttpSession session) {
