@@ -37,6 +37,17 @@ public class PlayerDao {
 			case "end_turn":
 				endTurn(session);
 				break;
+			case "change_teams":
+				session.setAttribute("round_num", 0);
+				session.setAttribute("spy_red", 0);
+				session.setAttribute("spy_blue", 0);
+				break;
+			case "play_again":
+				session.setAttribute("round_num", (int)session.getAttribute("round_num") + 1);
+				session.setAttribute("game_phase", "v");
+				session.setAttribute("spy_red", 0);
+				session.setAttribute("spy_blue", 0);
+				break;
 			default: // Catch all should be numeric identifier for button pressed.
 				buttonWasSelected(session,btn);
 		}
@@ -52,6 +63,8 @@ public class PlayerDao {
 		session.setAttribute("revealed", "0000000000000000000000000");
 		session.setAttribute("selected", "0000000000000000000000000");
 		session.setAttribute("game_phase", "p");
+		session.setAttribute("clue", "");
+		session.setAttribute("clue_number", 0);
 		try {
 			Connection connection = DBconnection.getConnectionToDatabase();
 			sql = "select * from codenames_wordbank where game_name like ?";
@@ -144,7 +157,6 @@ public class PlayerDao {
 	}
 	
 	private void checkCorrectGuess(HttpSession session) {
-		Boolean win = false;
 		String player_color = (String) session.getAttribute("player_color");
 		String board_colors = (String) session.getAttribute("board_colors");
 		String selected = (String) session.getAttribute("selected");
@@ -152,20 +164,26 @@ public class PlayerDao {
 		StringBuilder revealed = new StringBuilder((String)session.getAttribute("revealed"));
 		revealed.setCharAt(num, '1');
 		if (board_colors.charAt(num) == 'a') {
-			//Game over
+			gameOver("l", session);
 		} else if (board_colors.charAt(num) == 'n') {
 			// de-increment remaining guesses
 			
 		} else if (board_colors.charAt(num) == player_color.charAt(0)) {
 			// check if win has been achieved
-			win = checkForWin(player_color,board_colors,revealed.toString());
-			// de-increment remaining guesses
+			if (checkForWin(player_color,board_colors,revealed.toString())) {
+				gameOver("w", session);
+			} else {
+				// de-increment remaining guesses
+			}			
 		} else {
-			// Guess other team's spy
-			endTurn(session);
+			// Guess other team's word
+			if (checkForWin(myOppColor(player_color),board_colors,revealed.toString())) {
+				gameOver("l", session);
+			} else {
+				endTurn(session);
+			}						
 		}		
 		session.setAttribute("revealed", revealed.toString());
-		if (win) System.out.println("win");
 	}
 	
 	private Boolean checkForWin(String player_color, String board_colors, String revealed) {
@@ -174,6 +192,10 @@ public class PlayerDao {
 			if (board_colors.charAt(i) == player_color.charAt(0) && revealed.charAt(i) != '1') out = false;
 		}
 		return out;
+	}
+	
+	private void gameOver(String win_loss, HttpSession session) {
+		session.setAttribute("game_phase", win_loss);
 	}
 	
 	private void endTurn(HttpSession session) {

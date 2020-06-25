@@ -11,11 +11,14 @@
 	<body>
 		<h2>Reconnect to a game</h2>
 		<img src="images/fblogo.png" alt="Freshest Beignet" class=center >
-		<form action="Descriptionary/playgame" method="get">
-			<button class=button1>Reconnect to Descriptionary</button>
+		<form action="Codenames/play" method="get">
+			<button class=button1>Reconnect to Codenames</button>
 		</form> 
 		<form action="Onitama/play" method="get">
 			<button class=button1>Reconnect to Onitama</button>
+		</form> 
+		<form action="Descriptionary/playgame" method="get">
+			<button class=button1>Reconnect to Descriptionary</button>
 		</form> 
 	</body>
 </html>

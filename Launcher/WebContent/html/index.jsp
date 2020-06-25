@@ -11,11 +11,14 @@
 	<body>
 		<h2>Welcome to Fresh Beignet!</h2>
 		<img src="images/fblogo.png" alt="Freshest Beignet" class=center >
-		<form action="Descriptionary" method="get">
-			<button class=button1>Play Descriptionary</button>
+		<form action="Codenames" method="get">
+			<button class=button1>Play Codenames</button>
 		</form> 
 		<form action="Onitama" method="get">
 			<button class=button1>Play Onitama</button>
+		</form> 	
+		<form action="Descriptionary" method="get">
+			<button class=button1>Play Descriptionary</button>
 		</form> 			
 		<div class=center></div>
 		<h6>More game options coming soon!</h6>	

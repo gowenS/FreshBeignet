@@ -20,7 +20,12 @@ public class PlayGameServlet extends HttpServlet{
 		HttpSession session = req.getSession();
 		PlayerDao dao = new PlayerDao();
 		dao.getGameState(session);
-		req.getRequestDispatcher("/html/playgame.jsp").forward(req, resp);	
+		int round_num = (int) session.getAttribute("round_num");
+		if (round_num == 0) {
+			resp.sendRedirect("gamelobby");
+		} else {
+			req.getRequestDispatcher("/html/playgame.jsp").forward(req, resp);	
+		}		
 	}
 	
 	@Override
@@ -36,5 +41,4 @@ public class PlayGameServlet extends HttpServlet{
 			resp.sendRedirect("play");
 		}
 	}
-	
 }
