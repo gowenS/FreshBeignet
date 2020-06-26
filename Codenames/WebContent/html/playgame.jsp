@@ -49,8 +49,12 @@ private String getGameBoard(Boolean iAmSpy, Boolean myTurn, String game_phase, H
 		} 
 		if (myTurn && !iAmSpy && pic.contains("k") && clue != "" && game_phase.charAt(0) == 'p') {
 			out.append("<button onclick=\"sendBtnClick('" + Integer.toString(i) + "')\" class=gridCell"+pic+">" + wordsArray.get(i) + "</button> \n");
-		} else { 
-			out.append("<button class=gridCell"+pic+">" + wordsArray.get(i) + "</button> \n");
+		} else {
+			if (iAmSpy && (revealed.charAt(i) == '1') && game_phase.charAt(0) == 'p') {
+				out.append("<button class=gridCell"+pic+">--</button> \n");
+			} else {
+				out.append("<button class=gridCell"+pic+">" + wordsArray.get(i) + "</button> \n");
+			}			
 		}
 	}	
 	out.append("<br/> \n");

@@ -4,8 +4,8 @@
 <%!
 
 private String showTeam(String team) {
-	StringBuilder out = new StringBuilder("\n");
-	out.append(team.replace(",","\n"));
+	StringBuilder out = new StringBuilder("\n\n\n");
+	out.append(team.replace(",","\n\n"));
 	return out.toString();	
 }
 

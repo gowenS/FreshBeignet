@@ -261,7 +261,7 @@ textarea{
 }
 
 .gridCellk {
-	width: 55px;
+	width: 60px;
 	height: 55px;
 	border: 1px solid black;
 	text-align: center;
@@ -269,12 +269,12 @@ textarea{
 	font-family: 'Amatic SC', cursive;
 	flex: 1;
 	padding: 0;
-	margin: 2px;
+	margin: 0px;
 	background-color: #d3d7cf;
 }
 
 .gridCellks {
-	width: 55px;
+	width: 60px;
 	height: 55px;
 	border: 4px solid yellow;
 	text-align: center;
@@ -282,12 +282,12 @@ textarea{
 	font-family: 'Amatic SC', cursive;
 	flex: 1;
 	padding: 0;
-	margin: 2px;
+	margin: 0px;
 	background-color: #d3d7cf;
 }
 
 .gridCelln {
-	width: 55px;
+	width: 60px;
 	height: 55px;
 	border: 1px solid black;
 	text-align: center;
@@ -295,12 +295,12 @@ textarea{
 	font-family: 'Amatic SC', cursive;
 	flex: 1;
 	padding: 0;
-	margin: 2px;
+	margin: 0px;
 	background-color: #99e582;
 }
 
 .gridCellr {
-	width: 55px;
+	width: 60px;
 	height: 55px;
 	border: 1px solid black;
 	text-align: center;
@@ -308,12 +308,12 @@ textarea{
 	font-family: 'Amatic SC', cursive;
 	flex: 1;
 	padding: 0;
-	margin: 2px;
+	margin: 0px;
 	background-color: #e37676;
 }
 
 .gridCellb {
-	width: 55px;
+	width: 60px;
 	height: 55px;
 	border: 1px solid black;
 	text-align: center;
@@ -321,12 +321,12 @@ textarea{
 	font-family: 'Amatic SC', cursive;
 	flex: 1;
 	padding: 0;
-	margin: 2px;
+	margin: 0px;
 	background-color: #646ae3;
 }
 
 .gridCella {
-	width: 55px;
+	width: 60px;
 	height: 55px;
 	border: 1px solid black;
 	text-align: center;
@@ -334,7 +334,7 @@ textarea{
 	font-family: 'Amatic SC', cursive;
 	flex: 1;
 	padding: 0;
-	margin: 2px;
+	margin: 0px;
 	background-color: #ad7fa8;
 }
 
