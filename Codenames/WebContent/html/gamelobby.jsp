@@ -9,7 +9,6 @@ private String showTeam(String team) {
 	return out.toString();	
 }
 
-//TODO only show play game button once enough players are distributed across teams (psh when do you have time for that)
 %>
 
 <html>
@@ -34,7 +33,9 @@ private String showTeam(String team) {
 	</div>
 	
 	<div class="buttonholder">
-		<button onclick="sendBtnClick('p')" class=buttonBlue>Start Game</button>
+		<% if (((String)session.getAttribute("noTeam")).isEmpty() && !((String)session.getAttribute("redTeam")).isEmpty() && !((String)session.getAttribute("blueTeam")).isEmpty()) {%>
+		<button onclick="sendBtnClick('p')" class=button1>Start Game</button>
+		<%} %>
 	</div>
 	
 	<script>
