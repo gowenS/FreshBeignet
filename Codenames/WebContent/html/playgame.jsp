@@ -109,8 +109,8 @@ private String getWinningTeam(char w_l, String turn) {
 		<h3>Room Code: <%=(String) session.getAttribute("gameName") %></h3>
 		<h3>Choose the spies</h3>
 		<div class="lobbyTextAreaHolder">
-			<textarea class="spyTextAreaRed" readonly><%= (String)session.getAttribute("spy_red_name") %></textarea>
-			<textarea class="spyTextAreaBlue" readonly><%= (String)session.getAttribute("spy_blue_name") %></textarea>
+			<textarea class="spyTextAreaRed" readonly><%= ((String)session.getAttribute("spy_red_name"))==null?"":((String)session.getAttribute("spy_red_name")) %></textarea>
+			<textarea class="spyTextAreaBlue" readonly><%= ((String)session.getAttribute("spy_blue_name"))==null?"":((String)session.getAttribute("spy_blue_name")) %></textarea>
 		</div>
 		<div class="buttonholder">
 			<button onclick="sendBtnClick('v')" class=button1>Become <%= fullColorName(me) %> Spy</button>
