@@ -166,8 +166,7 @@ public class PlayerDao {
 		if (board_colors.charAt(num) == 'a') {
 			gameOver("l", session);
 		} else if (board_colors.charAt(num) == 'n') {
-			// de-increment remaining guesses
-			
+			endTurn(session);			
 		} else if (board_colors.charAt(num) == player_color.charAt(0)) {
 			// check if win has been achieved
 			if (checkForWin(player_color,board_colors,revealed.toString())) {
